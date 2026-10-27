@@ -1,0 +1,68 @@
+{
+  "sample_id": "openai-messages-smoke-001",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a workspace assistant. Use the provided tools and stop when a tool fails."
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Read reports/q1.txt and then archive it."
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "inline://attachment-1"
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "reasoning_content": "先读取文件内容，再根据读取结果决定是否归档。",
+      "content": "我先读取 reports/q1.txt。",
+      "tool_calls": [
+        {
+          "id": "call_read_1",
+          "type": "function",
+          "function": {
+            "name": "read_file",
+            "arguments": "{\"path\": \"reports/q1.txt\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_read_1",
+      "content": "Q1 revenue: 120"
+    },
+    {
+      "role": "assistant",
+      "content": "文件内容已读取，现在归档。",
+      "tool_calls": [
+        {
+          "id": "call_archive_1",
+          "type": "function",
+          "function": {
+            "name": "archive_file",
+            "arguments": "{\"path\": \"reports/q1.txt\", }"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_archive_1",
+      "is_error": true,
+      "content": "Error: invalid request payload"
+    },
+    {
+      "role": "assistant",
+      "content": "归档请求返回错误，我会先停止并等待人工确认。"
+    }
+  ]
+}

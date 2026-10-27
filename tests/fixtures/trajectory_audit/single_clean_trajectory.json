@@ -1,0 +1,33 @@
+{
+  "sample_id": "single-clean-trajectory",
+  "messages": [
+    {
+      "role": "user",
+      "content": "读取 notes.txt"
+    },
+    {
+      "role": "assistant",
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "c1",
+          "type": "function",
+          "function": {
+            "name": "read_file",
+            "arguments": "{\"path\": \"notes.txt\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "c1",
+      "content": "hello",
+      "is_error": false
+    },
+    {
+      "role": "assistant",
+      "content": "已完成读取"
+    }
+  ]
+}

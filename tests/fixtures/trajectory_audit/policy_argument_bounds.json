@@ -1,0 +1,31 @@
+{
+  "kind": "audit-policy",
+  "schema_version": "audit-policy/1",
+  "policy_id": "policy-argument-bounds-v1",
+  "policy_version": "1",
+  "scope": "trajectory",
+  "description": "write_file 的 path 长度不得超过 8",
+  "sample_ids": [
+    "policy-arg-bounds"
+  ],
+  "user_request": "写入内容",
+  "tools": [
+    {
+      "tool_name": "write_file",
+      "allowed": true,
+      "allowed_arguments": [
+        "path",
+        "content"
+      ],
+      "constraints": [
+        {
+          "argument": "path",
+          "comparator": "maximum_length",
+          "value": 8
+        }
+      ]
+    }
+  ],
+  "confirmation_events": [],
+  "out_of_scope_terms": []
+}

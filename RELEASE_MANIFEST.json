@@ -1,0 +1,269 @@
+{
+  "checks": {
+    "commands": [
+      [
+        "{python}",
+        "-S",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_trajectory_audit_run.py"
+      ],
+      [
+        "{python}",
+        "-S",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_trajectory_audit_sources.py"
+      ],
+      [
+        "{python}",
+        "-S",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_trajectory_audit_baseline_policy.py"
+      ]
+    ],
+    "passed": true
+  },
+  "files": {
+    ".env.example": {
+      "mode": "100644",
+      "sha256": "73c1baddecdacb3ef73bca92f1d119425739c9197779c5c6ecc4ec77966f1017"
+    },
+    ".gitignore": {
+      "mode": "100644",
+      "sha256": "0204dc199ae3e0cf2c0675eb86676353c5ece2ac29ae066c031794447fd21392"
+    },
+    "LICENSE": {
+      "mode": "100644",
+      "sha256": "bf09923210a8186467c43b56946a7726e95850c172077106038be441a40c5776"
+    },
+    "NOTICE": {
+      "mode": "100644",
+      "sha256": "ac0aa0ff5ff647ce74e8b7c0869082f1035c195173c897510ef5b855c2ebd62a"
+    },
+    "README.md": {
+      "mode": "100644",
+      "sha256": "71e14bfb8740df41e85a083a14d31ce5b4c3bae8bca09961b0c15834732fef16"
+    },
+    "THIRD_PARTY_NOTICES.md": {
+      "mode": "100644",
+      "sha256": "86ded653b5b192eb2cc359ce7480130cd9077c8a84ea95ff85df82fa67d2594f"
+    },
+    "docs/provenance.md": {
+      "mode": "100644",
+      "sha256": "bc655edb9b5a1da629f76db31a6cfa24719142632868bb25bd481a00015048be"
+    },
+    "fixtures/smoke/atbench_smoke.json": {
+      "mode": "100644",
+      "sha256": "34eec42811d718141877d4098c4370d7c66145b92b59294b18b9a8b00c87a3d5"
+    },
+    "fixtures/smoke/hintbench_smoke.json": {
+      "mode": "100644",
+      "sha256": "4d4d541794aae61c758db9fffccbdefe55348edf42cf90128a7ed028198f6c2c"
+    },
+    "fixtures/smoke/openai_messages_smoke.json": {
+      "mode": "100644",
+      "sha256": "1b63791ff21841a7444825a16fb28a0cbeecf3a5643f01330a37128ce74a5bee"
+    },
+    "pyproject.toml": {
+      "mode": "100644",
+      "sha256": "f153559f586fb186f03470819b59254dabc25484575040644f50e64cfa5c3022"
+    },
+    "tests/fixtures/trajectory_audit/policy_allowed.json": {
+      "mode": "100644",
+      "sha256": "0ed376e64b6d50b38ad94101a97004b58219ed19f892dc95e739086947c269f9"
+    },
+    "tests/fixtures/trajectory_audit/policy_allowed_batch.json": {
+      "mode": "100644",
+      "sha256": "b959c652d2962d70e2645a3afc723583bca643953bf08c88580a257a6aa4800e"
+    },
+    "tests/fixtures/trajectory_audit/policy_argument_bounds.json": {
+      "mode": "100644",
+      "sha256": "6665a4df93f76c821ae6fe3bfb6f98bb21596177dab239898fe76862812f3f66"
+    },
+    "tests/fixtures/trajectory_audit/policy_argument_bounds_batch.json": {
+      "mode": "100644",
+      "sha256": "b8e86d4b15e83f1c26161c68def9c5e7501165bbd6ac9a09098e50d29432c826"
+    },
+    "tests/fixtures/trajectory_audit/policy_human_confirmation.json": {
+      "mode": "100644",
+      "sha256": "cf813ff74ff7303b142f9ab7d17c7865c72a9bf33bd8b7c7a1f09b0c1e8e1f18"
+    },
+    "tests/fixtures/trajectory_audit/policy_human_confirmation_batch.json": {
+      "mode": "100644",
+      "sha256": "e384e34e47066f6f6960733bdc1ea6aff6758e2bf7d22b6cd1741661c6d7d220"
+    },
+    "tests/fixtures/trajectory_audit/policy_unauthorized.json": {
+      "mode": "100644",
+      "sha256": "8520e7d59075e315f1c342c6f592c33d2df19e4058a8f89989f83871c4513562"
+    },
+    "tests/fixtures/trajectory_audit/policy_unauthorized_batch.json": {
+      "mode": "100644",
+      "sha256": "5596d4bbdc8242568ece62a2fd76a42d157e528f158d876ae3364da7fc645302"
+    },
+    "tests/fixtures/trajectory_audit/policy_user_scope.json": {
+      "mode": "100644",
+      "sha256": "6c44edc65d9e4ad25006c68584dfb826dde6ae8da25ff32bc0dd705d83519f13"
+    },
+    "tests/fixtures/trajectory_audit/policy_user_scope_batch.json": {
+      "mode": "100644",
+      "sha256": "babfeac1165268165ab47640ce0eb8b80a0113b1ce1e65f11d0b75c52cbcd436"
+    },
+    "tests/fixtures/trajectory_audit/single_clean_trajectory.json": {
+      "mode": "100644",
+      "sha256": "f36a2ceaa08804c4e5d3903ea8e1ed78ddf6539ec5ad822e03b32b881050f964"
+    },
+    "tests/fixtures/trajectory_audit/structural_batch.json": {
+      "mode": "100644",
+      "sha256": "44f1b9a8aeb4aff275a282d5c91de4a2acd8ab14e1902a77696bf0dca2eab98d"
+    },
+    "tests/test_trajectory_audit_baseline_policy.py": {
+      "mode": "100644",
+      "sha256": "bd47ff5711ae50129960a0320790862055b0327d2cb2614c33d7c945f4262a6d"
+    },
+    "tests/test_trajectory_audit_run.py": {
+      "mode": "100644",
+      "sha256": "95641c441c3e5853327a8b6b2a6bd6154e47c40ea8b40a325bdb0d584c64edf2"
+    },
+    "tests/test_trajectory_audit_sources.py": {
+      "mode": "100644",
+      "sha256": "e989e54e64a93cf267e0ba7b95ea8500517c3d7e702df03564bd733f8ed41502"
+    },
+    "third_party/ATBench-LICENSE": {
+      "mode": "100644",
+      "sha256": "bf09923210a8186467c43b56946a7726e95850c172077106038be441a40c5776"
+    },
+    "third_party/HINTBench-LICENSE": {
+      "mode": "100644",
+      "sha256": "5de315ec6594cd0c0cd5a958ee78201a6a7508c39142359fe0a6848daa2f1d69"
+    },
+    "trajectory_audit/__init__.py": {
+      "mode": "100644",
+      "sha256": "bf7ed80987f7202d8d8ffb157d1cbd0a64e39efd7062131c09e7d08f6f565efa"
+    },
+    "trajectory_audit/__main__.py": {
+      "mode": "100644",
+      "sha256": "b6dc420f5b3bad1d55a91f3ab7076fc50ecb52bc9116eff085e424504a21f9ba"
+    },
+    "trajectory_audit/acceptance.py": {
+      "mode": "100644",
+      "sha256": "1bc18ade77af27131dcc4d0672e51e6a4276a3f18b0f21a8620309068ccb7f4e"
+    },
+    "trajectory_audit/adapters.py": {
+      "mode": "100644",
+      "sha256": "8ada2c9d4303e03bb63e4211fb8b2d50fabc9d7e12ab428027c4f5c59231eb79"
+    },
+    "trajectory_audit/arguments.py": {
+      "mode": "100644",
+      "sha256": "667af4fe23b72278e15713ef3323f0b09ba34380313cbdf205d974b8416dbc95"
+    },
+    "trajectory_audit/artifacts.py": {
+      "mode": "100644",
+      "sha256": "bbec85fa9ed4ca03e3c1737d7ce7f089c98766b79af68a718d257b005e5fa3db"
+    },
+    "trajectory_audit/atbench.py": {
+      "mode": "100644",
+      "sha256": "b5b5c730c96ec6e1063dfd7c8dbc3bb1ca492a261c9cc7fa6819d94058f74ff6"
+    },
+    "trajectory_audit/baseline.py": {
+      "mode": "100644",
+      "sha256": "4f6ea684ece2e430304e332cbcf4f618174029dc32c8cbab455eb02be9cc4139"
+    },
+    "trajectory_audit/batch.py": {
+      "mode": "100644",
+      "sha256": "f05a9cbc1ac67655f0b743985de49626eb43796c7b7722142b4adc6fd091ce40"
+    },
+    "trajectory_audit/cli.py": {
+      "mode": "100644",
+      "sha256": "8120788fb48951615aed5fdfdef44e3c03503b7aabea693a37dffa0028571491"
+    },
+    "trajectory_audit/errors.py": {
+      "mode": "100644",
+      "sha256": "d42dbe601e6e2b80d45300d1879cb880a07be989ba68fca501098779db7b09c3"
+    },
+    "trajectory_audit/hintbench.py": {
+      "mode": "100644",
+      "sha256": "a0240c22917beaf823099f63240723b1c61365b51370ce56bdb50b85bd45f9cc"
+    },
+    "trajectory_audit/judge.py": {
+      "mode": "100644",
+      "sha256": "f8236744e004f41351f7cc369265b57132b88f816c06feb223eec1370b7c388c"
+    },
+    "trajectory_audit/metrics.py": {
+      "mode": "100644",
+      "sha256": "1dd4b11f22faafc039bd2b054e666af7039fb9c101fa3812ea30bb55be06cccb"
+    },
+    "trajectory_audit/model.py": {
+      "mode": "100644",
+      "sha256": "53b3a237259a8053ae3ae3a34e2e6eea3963ce1e4e69d7de336a691710a7e7bc"
+    },
+    "trajectory_audit/normalization.py": {
+      "mode": "100644",
+      "sha256": "e2e73f6d814e5d84deee04fd84013de53b328baa99c41fa58e785aa01e5af1f7"
+    },
+    "trajectory_audit/openai_messages.py": {
+      "mode": "100644",
+      "sha256": "11a418cc873f3ec57c10d8d198360412c466fd38ec2eb5fb23cc7cdfa005dedf"
+    },
+    "trajectory_audit/page.py": {
+      "mode": "100644",
+      "sha256": "6be4ed7f322864bf8c1d36d5d3e6456d4af8582cf97a7cc03992fffa4c30bc32"
+    },
+    "trajectory_audit/pinned.py": {
+      "mode": "100644",
+      "sha256": "b4e32e0e1ac6bce0645c193b83b9c39af4502c93e0e3ccb6bda76da51a942f8c"
+    },
+    "trajectory_audit/policy.py": {
+      "mode": "100644",
+      "sha256": "ccec796b84ee78e49b026e35e996c7d9434a9cc769459ec3cea133ac456af426"
+    },
+    "trajectory_audit/providers.py": {
+      "mode": "100644",
+      "sha256": "633d35866e70112f6006f7a935face015006bacca41a3d4f53b71e5ece694d12"
+    },
+    "trajectory_audit/reference.py": {
+      "mode": "100644",
+      "sha256": "ad0ef6e099adc07877ca0cf6d5cde28345f51fd35a93f249f7fb546c4abe85b0"
+    },
+    "trajectory_audit/reference_page.py": {
+      "mode": "100644",
+      "sha256": "b658e0e11a852fceaccdf8d3c9d355957f7ce172bb38394f88d715fb95ae7e08"
+    },
+    "trajectory_audit/runner.py": {
+      "mode": "100644",
+      "sha256": "66718e2381a89ce390995e42f1d94df6464523160d30d33d084e18047826e741"
+    },
+    "trajectory_audit/schema.py": {
+      "mode": "100644",
+      "sha256": "5fe6c9d87361cbc01a0688e4637388be2692ca57ba220daf2ecba4df4f29db09"
+    },
+    "trajectory_audit/source_common.py": {
+      "mode": "100644",
+      "sha256": "c8100d3734433427299a2ce5398d875c11d681da605069169ff402d5931b8c8f"
+    },
+    "trajectory_audit/source_labels.py": {
+      "mode": "100644",
+      "sha256": "ffd04ace5b79f79b0f8b4208a2bd1b4077e0c83ac78920dcb389246e3207818e"
+    }
+  },
+  "project": "NGAI-LLMSafeContent/Project_5_Agent_Trajectory_Risk_Audit_Tool",
+  "schema": 1,
+  "source_commit": "f45dec0b0fc2505882a39c0c9169c352c9e65f45",
+  "whitelist_sha256": "df0a919d46f479bda93e7f30956170b58df5ea9b15f63b6d0db06a8197ad71ec"
+}

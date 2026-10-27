@@ -1,0 +1,30 @@
+{
+  "kind": "audit-policy",
+  "schema_version": "audit-policy/1",
+  "policy_id": "policy-allowed-v1",
+  "policy_version": "1",
+  "scope": "trajectory",
+  "description": "只允许读取相对路径下的文本文件",
+  "sample_ids": [
+    "policy-allowed"
+  ],
+  "user_request": "读取 notes.txt",
+  "tools": [
+    {
+      "tool_name": "read_file",
+      "allowed": true,
+      "allowed_arguments": [
+        "path"
+      ],
+      "constraints": [
+        {
+          "argument": "path",
+          "comparator": "maximum_length",
+          "value": 64
+        }
+      ]
+    }
+  ],
+  "confirmation_events": [],
+  "out_of_scope_terms": []
+}
