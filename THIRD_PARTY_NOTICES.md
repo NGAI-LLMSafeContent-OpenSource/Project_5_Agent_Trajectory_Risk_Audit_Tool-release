@@ -10,3 +10,5 @@
 | HINTBench冒烟子集 | https://github.com/Jiacheng-31/HINTBench/tree/1210cd54ebc9b0a1f3a9c4ff122705b7b3cb208b | Apache-2.0（固定版本LICENSE） | 只保留原smoke子集及source元数据；许可证见third_party/HINTBench-LICENSE |
 
 数据样例保持源仓原文及来源元数据，未重标注。发布README、依赖清单及来源说明发生编辑；其余纳入的源码、测试与样例取自固定源Git提交。发布包不自动下载或执行样例描述中的工具操作。
+
+网页入口使用 Gradio（Apache-2.0）：https://github.com/gradio-app/gradio 。其运行时依赖以安装包附带的许可证为准。离线 CLI 仍只依赖标准库。

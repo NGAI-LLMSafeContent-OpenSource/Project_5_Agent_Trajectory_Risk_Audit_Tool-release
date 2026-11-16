@@ -39,3 +39,7 @@ ATBench/HINTBench仅提供已有公开来源的固定冒烟子集，来源、版
 本分支为按白名单导出的干净发布历史。源提交、发布文件清单及SHA-256见RELEASE_MANIFEST.json与SHA256SUMS；原始开发历史不在本分支中。
 
 项目使用Apache-2.0；保留LICENSE、原始NOTICE及各源文件SPDX标识。第三方归属见THIRD_PARTY_NOTICES.md，来源说明见docs/provenance.md。
+
+## ModelScope 在线应用
+
+部署适配与本地启动方式见 [deploy/README.md](deploy/README.md)。部署文件已纳入统一发布源码，在线服务需另外构建和启动。

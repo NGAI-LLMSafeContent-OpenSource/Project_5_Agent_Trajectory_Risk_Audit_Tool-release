@@ -36,6 +36,18 @@
         "tests",
         "-p",
         "test_trajectory_audit_baseline_policy.py"
+      ],
+      [
+        "{python}",
+        "-S",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_studio_app.py"
       ]
     ],
     "passed": true
@@ -59,11 +71,19 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "71e14bfb8740df41e85a083a14d31ce5b4c3bae8bca09961b0c15834732fef16"
+      "sha256": "eab72081ce1aa468d33f3f2c3ddc99c7d7203b2d82df21c7deb4f6bccca8468d"
     },
     "THIRD_PARTY_NOTICES.md": {
       "mode": "100644",
-      "sha256": "86ded653b5b192eb2cc359ce7480130cd9077c8a84ea95ff85df82fa67d2594f"
+      "sha256": "cef45386ca75e91c1ac745e3b929ed44bc82101cc87b4329e73751e8b4cb21a0"
+    },
+    "app.py": {
+      "mode": "100644",
+      "sha256": "efcdf0b46e2775e2f2ac02c13e2e35c0867b6f0b0266ff51bb3ff74ae480249e"
+    },
+    "deploy/README.md": {
+      "mode": "100644",
+      "sha256": "19eff29c1dedbd0cc2c389a1b78b25e7082cf05abe22504494c0333da819521a"
     },
     "docs/provenance.md": {
       "mode": "100644",
@@ -84,6 +104,10 @@
     "pyproject.toml": {
       "mode": "100644",
       "sha256": "f153559f586fb186f03470819b59254dabc25484575040644f50e64cfa5c3022"
+    },
+    "requirements.txt": {
+      "mode": "100644",
+      "sha256": "f7f9c9e095a5da1c21ad22a514de08ea022608df8a4f6dfaf6740d69ebdab270"
     },
     "tests/fixtures/trajectory_audit/policy_allowed.json": {
       "mode": "100644",
@@ -132,6 +156,10 @@
     "tests/fixtures/trajectory_audit/structural_batch.json": {
       "mode": "100644",
       "sha256": "44f1b9a8aeb4aff275a282d5c91de4a2acd8ab14e1902a77696bf0dca2eab98d"
+    },
+    "tests/test_studio_app.py": {
+      "mode": "100644",
+      "sha256": "67e0739461ff0bc57466cdc4e049a6f80036e0d861773fb39c17c74fea9d0cb2"
     },
     "tests/test_trajectory_audit_baseline_policy.py": {
       "mode": "100644",
@@ -265,5 +293,5 @@
   "project": "NGAI-LLMSafeContent/Project_5_Agent_Trajectory_Risk_Audit_Tool",
   "schema": 1,
   "source_commit": "f45dec0b0fc2505882a39c0c9169c352c9e65f45",
-  "whitelist_sha256": "df0a919d46f479bda93e7f30956170b58df5ea9b15f63b6d0db06a8197ad71ec"
+  "whitelist_sha256": "5391fb218b5c352296f9b4fc322191c3c20cb8341709db6f8f38d5b161823b05"
 }
