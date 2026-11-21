@@ -1,0 +1,13 @@
+{
+  "name": "legal_extensions",
+  "provider_config": {
+    "scenario": "legal_extensions"
+  },
+  "input": "fixtures/topic4_provider/single_input_batch.json",
+  "expect": {
+    "exit_code": 0,
+    "json_object": true,
+    "status": "complete",
+    "atomic_tmp_absent": true
+  }
+}

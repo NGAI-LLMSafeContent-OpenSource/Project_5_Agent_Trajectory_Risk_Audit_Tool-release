@@ -1,45 +1,75 @@
-# 课题五：Agent轨迹风险审计工具
+# SeClaw / Agent轨迹风险审计
 
-发布单位：NGAI-LLMSafeContent。版本：1.0.0。发布日期：2026-10-27。
+提供Agent安全任务执行、轨迹规范化、Provider调用、评分归档和可交互审阅工作台。
 
-本发布包提供离线轨迹规范化、确定性规则审计、策略校验及HTML结果页。Python 3.11或更新版本即可运行，核心功能仅使用标准库，无需安装额外依赖、模型、Docker或API令牌。
+发布单位：NGAI-LLMSafeContent。发布分支：`release/1.0`；更新日期：2026-11-21；自研代码许可：Apache-2.0，第三方保留原许可。
 
-## 安装和运行
+## 功能
 
-克隆release/1.0分支后进入仓库根目录。下面命令均从根目录执行：
+- 150个OpenClaw任务及Docker批量执行、grader和可选Judge
+- OpenAI Messages、ATBench、HINTBench适配及规则/课题四Provider
+- corpus构建、score、baseline/source-label报告及审阅包
+- React/FastAPI工作台、原文证据查看、归档重开与提交文件导出
+
+## 安装与快速开始
+
+Python ≥3.11、uv；工作台另需Node.js/npm，任务执行另需可用Docker及镜像，真实Provider/模型需自行配置。
+
+从公开仓下载同一发布分支：
 
 ```bash
-python3 -m trajectory_audit run --input fixtures/smoke/openai_messages_smoke.json --out runs --provider deterministic-baseline
-python3 -m trajectory_audit batch --input fixtures/smoke/atbench_smoke.json --out runs --provider deterministic-baseline --adapter atbench
-python3 -m trajectory_audit batch --input fixtures/smoke/hintbench_smoke.json --out runs --provider deterministic-baseline --adapter hintbench
+git clone --branch release/1.0 https://github.com/NGAI-LLMSafeContent-OpenSource/Project_5_Agent_Trajectory_Risk_Audit_Tool-release.git
+cd Project_5_Agent_Trajectory_Risk_Audit_Tool-release
+python -m venv .venv
+# Linux/macOS
+source .venv/bin/activate
+# Windows PowerShell改用 .venv\Scripts\Activate.ps1
 ```
 
-使用Windows时可将python3替换为python。输出根目录下每次生成独立run或batch目录，包含输入清单、规范化轨迹、audit_result.json、metrics.json和index.html；直接在浏览器打开HTML即可审阅，不依赖服务器或外部CDN。
-
-## 最小运行测试
+以下命令均以仓库根目录为起点，注释中的外部条件需先准备：
 
 ```bash
-python3 -m unittest discover -s tests -p test_trajectory_audit_run.py
-python3 -m unittest discover -s tests -p test_trajectory_audit_sources.py
-python3 -m unittest discover -s tests -p test_trajectory_audit_baseline_policy.py
+uv sync --group task-test
+uv run python -m trajectory_audit run --input fixtures/smoke/openai_messages_smoke.json --out runs --provider deterministic-baseline
+uv run python -m trajectory_audit corpus --help
+uv run python -m trajectory_audit topic4-run --help
+# 工作台：两个终端
+./workbench/run-api.sh
+./workbench/run-web.sh
 ```
 
-共60项测试，覆盖实际CLI运行、输出完整性、三个输入适配器及策略规则。测试自行创建和清理临时输出，无需已有数据库、缓存或开发配置。
+## 使用与输出
 
-## 配置、样例与功能边界
+工作台默认UI5173、API8765；上传轨迹后查看审计、证据和归档。默认假Provider只用于合同演示，真实课题四按 `workbench/README.md` 设置TOPIC4_COMMAND/CONFIG等变量。Docker任务执行按 `README_CN.md`、`docs/docker.md` 配置模型并运行 `scripts/batch_execute.sh --help`。源仓现行150个任务保留，历史工作台原型和预跑报告排除。
 
-默认使用deterministic-baseline，Judge关闭。可用`python3 -m trajectory_audit --help`及各子命令`--help`查看选项；策略示例见tests/fixtures/trajectory_audit/。`.env.example`是源仓保留的空凭据模板，核心离线审计不读取API密钥。
+## 配置与外部依赖
 
-审计结果是规则检查，不代表语义模型判断。Judge接口可供另行集成，默认不运行。本包不包含Docker任务、模型权重、完整第三方数据集、跨课题服务、竞赛验收包、参考标注或私有语料；acceptance/reference等扩展需要自行获取相应合法输入，未作为本版本验收能力。
+task fixture中的演练凭据和截断密钥为本地mock输入，不能当真实凭据使用。真实模型、Docker权限、外部数据缓存、冻结语料输入和参考标注需自备。完整提交导出仍受原仓Provider字段未齐的限制，见KNOWN_ISSUES.md。
 
-ATBench/HINTBench仅提供已有公开来源的固定冒烟子集，来源、版本和许可证保留在样例source字段及THIRD_PARTY_NOTICES.md中，不包含完整数据集。
+真实凭据只在自己的运行环境或平台Secrets中配置，不提交.env、用户上传、模型权重或运行结果。原仓文件中的内网服务地址经发布负责人确认按原样保留，使用者应在本地配置自己的可达服务。
 
-## 版本和许可证
+## 验证与已知问题
 
-本分支为按白名单导出的干净发布历史。源提交、发布文件清单及SHA-256见RELEASE_MANIFEST.json与SHA256SUMS；原始开发历史不在本分支中。
+完成对应依赖准备后运行：
 
-项目使用Apache-2.0；保留LICENSE、原始NOTICE及各源文件SPDX标识。第三方归属见THIRD_PARTY_NOTICES.md，来源说明见docs/provenance.md。
+```bash
+python tools/release_check.py
+```
 
-## ModelScope 在线应用
+检查包含发布文件完整性、原仓文件一致性与声明的最小测试。它不会自动下载模型或申请API，也不代表全部真实业务/准确率验收。保留的原仓错误、未运行项及外部依赖见 [KNOWN_ISSUES.md](KNOWN_ISSUES.md)。
 
-部署适配与本地启动方式见 [deploy/README.md](deploy/README.md)。部署文件已纳入统一发布源码，在线服务需另外构建和启动。
+## 发布版本与文件清单
+
+本版本以原开发仓主分支提交 `8bc943ba697f4c613540c6b0644e7467cb3a767e` 为源。功能实现与对应原文件保持一致；README、许可说明和发布辅助材料单独登记。当前功能的必要源码、配置、界面与运行资源保留，明确弃用的原型、历史结果和开发缓存不捆绑。
+
+- [逐文件发布清单](RELEASE_FILES.md)
+- [原仓文件与Git对象对应关系](SOURCE_ALIGNMENT.json)
+- [完整文件SHA-256及权限](RELEASE_MANIFEST.json)，校验表为SHA256SUMS
+
+校验值按Git存储字节生成；若原.gitattributes规定检出换行转换，请用Git对象或发布检查脚本校验，避免将LF/CRLF误认为源码变化。各公开平台release/1.0使用同一个提交，平台生成的运行分支不属于此发布清单。
+
+## 反馈、贡献与许可证
+
+请通过 [公开仓Issues](https://github.com/NGAI-LLMSafeContent-OpenSource/Project_5_Agent_Trajectory_Risk_Audit_Tool-release/issues) 提交复现步骤、环境和日志摘要，勿附真实凭据或用户数据。代码问题由课题维护者在原开发仓处理，发布负责人同步审核后的版本；不要仅修一个平台造成分歧。
+
+自研代码采用[Apache-2.0](LICENSE)。模型、数据集、外部服务和第三方代码遵循各自许可与使用条件，见[第三方说明](THIRD_PARTY_NOTICES.md)。

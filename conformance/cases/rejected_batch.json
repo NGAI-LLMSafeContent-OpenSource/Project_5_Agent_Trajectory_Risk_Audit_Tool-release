@@ -1,0 +1,13 @@
+{
+  "name": "rejected_batch",
+  "provider_config": {
+    "scenario": "rejected_batch"
+  },
+  "input": "fixtures/topic4_provider/single_input_batch.json",
+  "expect": {
+    "exit_code": 0,
+    "output_present": true,
+    "json_object": true,
+    "status": "rejected"
+  }
+}

@@ -1,0 +1,306 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_trajectory_audit_run.py"
+      ],
+      "cwd": ".",
+      "name": "test_trajectory_audit_run.py",
+      "timeout": 360,
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_trajectory_audit_sources.py"
+      ],
+      "cwd": ".",
+      "name": "test_trajectory_audit_sources.py",
+      "timeout": 360,
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_trajectory_audit_baseline_policy.py"
+      ],
+      "cwd": ".",
+      "name": "test_trajectory_audit_baseline_policy.py",
+      "timeout": 360,
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_topic4_provider_validator.py"
+      ],
+      "cwd": ".",
+      "name": "test_topic4_provider_validator.py",
+      "timeout": 360,
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_topic4_provider_adapter.py"
+      ],
+      "cwd": ".",
+      "name": "test_topic4_provider_adapter.py",
+      "timeout": 360,
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_topic4_provider_conformance.py"
+      ],
+      "cwd": ".",
+      "name": "test_topic4_provider_conformance.py",
+      "timeout": 360,
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_topic4_cli_run.py"
+      ],
+      "cwd": ".",
+      "name": "test_topic4_cli_run.py",
+      "timeout": 360,
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "name": "workbench-api-tests",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_workbench_api.py"
+      ],
+      "env": {
+        "PYTHONPATH": "{root}"
+      },
+      "timeout": 180
+    },
+    {
+      "name": "workbench-deploy-tests",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_workbench_deploy.py"
+      ],
+      "env": {
+        "PYTHONPATH": "{root}"
+      },
+      "timeout": 180
+    },
+    {
+      "name": "workbench-messages-external-data",
+      "argv": [
+        "{python}",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_workbench_messages.py"
+      ],
+      "requires_env": [
+        "WORKBENCH_ACCEPTANCE_DATA_PREPARED"
+      ],
+      "env": {
+        "PYTHONPATH": "{root}"
+      },
+      "timeout": 180
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "trajectory_audit",
+        "corpus",
+        "--help"
+      ],
+      "cwd": ".",
+      "name": "cli-corpus",
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "trajectory_audit",
+        "score",
+        "--help"
+      ],
+      "cwd": ".",
+      "name": "cli-score",
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "trajectory_audit",
+        "topic4-run",
+        "--help"
+      ],
+      "cwd": ".",
+      "name": "cli-topic4-run",
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "trajectory_audit",
+        "baseline-report",
+        "--help"
+      ],
+      "cwd": ".",
+      "name": "cli-baseline-report",
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "-m",
+        "trajectory_audit",
+        "source-label-report",
+        "--help"
+      ],
+      "cwd": ".",
+      "name": "cli-source-label-report",
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "argv": [
+        "{python}",
+        "scripts/docker_execute_backend.py",
+        "--help"
+      ],
+      "cwd": ".",
+      "name": "docker-batch-help",
+      "env": {
+        "PYTHONPATH": "{root}"
+      }
+    },
+    {
+      "name": "workbench-install",
+      "argv": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "cwd": "workbench/web",
+      "timeout": 360,
+      "env": {
+        "npm_config_registry": "https://registry.npmmirror.com",
+        "npm_config_maxsockets": "4"
+      }
+    },
+    {
+      "name": "workbench-build",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": "workbench/web",
+      "timeout": 360
+    },
+    {
+      "name": "workbench-tests",
+      "argv": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=1",
+        "--minWorkers=1"
+      ],
+      "cwd": "workbench/web",
+      "timeout": 360
+    }
+  ],
+  "scope": "Pinned source byte/mode integrity, declared CPU/HTTP/frontend checks. Full model/GPU/data-dependent functionality is not implied. Upstream failures are preserved and separately documented.",
+  "servers": []
+}

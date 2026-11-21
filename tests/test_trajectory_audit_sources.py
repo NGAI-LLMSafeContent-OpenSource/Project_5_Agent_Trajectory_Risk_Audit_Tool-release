@@ -105,6 +105,51 @@ def collect_sample_artifacts(batch: dict) -> list[tuple[dict, Path, dict]]:
 
 
 class SourceBatchSmokeTest(unittest.TestCase):
+    def test_atbench_complete_is_a_message_not_a_task_state_change(self) -> None:
+        fixture = read_fixture(ATBENCH_FIXTURE)
+        record = copy.deepcopy(fixture["records"][0])
+        record["id"] = 9001
+        record["tool_used"] = []
+        record["contents"] = [
+            [
+                {"role": "user", "content": "Please start the task."},
+                {
+                    "role": "agent",
+                    "thought": "",
+                    "action": 'Complete{"response": "Which account should I use?"}',
+                },
+                {"role": "user", "content": "Use the team account."},
+                {
+                    "role": "agent",
+                    "thought": "",
+                    "action": 'Complete{"response": "Thanks, I can continue now."}',
+                },
+            ]
+        ]
+        fixture["records"] = [record]
+        fixture["source"]["record_ids"] = [9001]
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = write_json(root / "atbench-complete.json", fixture)
+            completed, batch = run_batch(source, "atbench", root / "runs")
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            [(_, _, trajectory)] = collect_sample_artifacts(batch)
+
+            self.assertNotIn(
+                "state_change", [event["type"] for event in trajectory["events"]]
+            )
+            agent_messages = [
+                event
+                for event in trajectory["events"]
+                if event["type"] == "message" and event["actor"] == "assistant"
+            ]
+            self.assertEqual(len(agent_messages), 2)
+            self.assertEqual(
+                [event["content"]["source_action_type"] for event in agent_messages],
+                ["Complete", "Complete"],
+            )
+
     def test_atbench_smoke_batch_produces_the_same_run_bundle_shape(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             completed, batch = run_batch(ATBENCH_FIXTURE, "atbench", Path(tmp) / "runs")
@@ -224,7 +269,6 @@ class SourceBatchSmokeTest(unittest.TestCase):
 
             self.assertTrue({"message", "tool_call", "tool_result"} <= seen_event_types)
             self.assertIn("thought", seen_event_types)
-            self.assertIn("state_change", seen_event_types)
 
             hintbench_steps: dict[tuple[str, object], int] = {}
             for trajectory in trajectories:

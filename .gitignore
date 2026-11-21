@@ -17,6 +17,15 @@ benchmark/results/
 traces/
 runs/
 
+# Generated audit inputs/results (e.g. `corpus build --out artifacts/...`)
+artifacts/
+
+# Local deck/PPT build scratch (previews, candidate pptx, validation dumps)
+.codex-ppt-build/
+
+# Local agent scratch (issue drafts, ticket notes; never commit)
+.scratch/
+
 # Pinned dataset cache (fetch with scripts/fetch_datasets.py, never commit)
 .cache/
 
@@ -33,6 +42,10 @@ __pycache__/
 # IDE
 .idea/
 .vscode/
+
+# Workbench frontend
+workbench/web/node_modules/
+workbench/web/dist/
 
 # Keep the public release task list trackable if broader batch_inputs ignores are added later.
 !batch_inputs/

@@ -14,17 +14,27 @@ import sys
 from pathlib import Path
 from typing import Any, Sequence
 
-from . import acceptance, reference
+from . import acceptance, corpus, reference
+from . import development as development_module
+from . import edition as edition_module
+from . import pinned
 from .adapters import ADAPTERS, OPENAI_MESSAGES_ADAPTER
 from .artifacts import read_json, write_json
 from .batch import execute_batch
 from .errors import RunError
+from .baseline_report import build_baseline_report
+from .source_label_report import build_source_label_report
+from .verdict_score import score_archived_verdicts
 from .judge import JudgeError, available_judges, resolve_judge
 from .policy import Policy, PolicyError, load_policy
 from .providers import PROVIDERS
 from .runner import execute_run
 
 DEFAULT_DATASET_ROOT = ".cache/datasets"
+DEFAULT_ACCEPTANCE_MANIFEST = Path("acceptance") / "acceptance-v1.json"
+_SUBCOMMAND_HINT = (
+    "缺少子命令：run、batch、score、baseline-report、source-label-report、topic4-run、acceptance、reference 或 corpus"
+)
 
 
 class _ArgumentParser(argparse.ArgumentParser):
@@ -33,6 +43,10 @@ class _ArgumentParser(argparse.ArgumentParser):
 
 
 def _add_audit_options(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--topic4-config", metavar="PATH", help="课题四配置；也可设置 TOPIC4_CONFIG，默认 finial/config/toolchain.json")
+    parser.add_argument("--topic4-command", metavar="COMMAND", help="课题四启动命令前缀；也可设置 TOPIC4_COMMAND")
+    parser.add_argument("--topic4-timeout", type=float, metavar="SECONDS", help="课题四总超时，默认 1800 秒")
+    parser.add_argument("--topic4-profile", choices=("finial-1.0", "strict-v1"), help="输出兼容版本，默认 finial-1.0；topic4-run 仍默认严格校验")
     parser.add_argument(
         "--policy",
         metavar="PATH",
@@ -60,6 +74,12 @@ def build_parser() -> argparse.ArgumentParser:
         description="Agent 轨迹风险审计：输入校验、来源适配、归一化、显式 baseline 审计与不可变 run 包。",
     )
     subparsers = parser.add_subparsers(dest="command", metavar="<command>")
+    pujiang_parser = subparsers.add_parser('pujiang', help='构建或重放验证公开五例 v3 开发交付')
+    pujiang_actions = pujiang_parser.add_subparsers(dest='pujiang_action', required=True)
+    for action in ('build', 'verify'):
+        action_parser = pujiang_actions.add_parser(action)
+        action_parser.add_argument('--source', type=Path, required=True)
+        action_parser.add_argument('--out' if action == 'build' else '--root', type=Path, required=True)
     run_parser = subparsers.add_parser(
         "run",
         help="运行一条轨迹并生成 run 包",
@@ -223,6 +243,240 @@ def build_parser() -> argparse.ArgumentParser:
     )
     reference_export.add_argument("--package", metavar="DIR", help="审阅包目录")
     reference_export.add_argument("--out", metavar="PATH", help="生效标注输出文件")
+
+    corpus_parser = subparsers.add_parser(
+        "corpus",
+        help="构建与校验 topic4-audit-input/1 审计输入",
+        description=(
+            "build 把单条来源记录或 source-batch/1 批次通过白名单投影为"
+            " topic4-audit-input/1；validate 校验已有输入文件的 Schema 与摘要。"
+        ),
+    )
+    corpus_actions = corpus_parser.add_subparsers(
+        dest="corpus_action", metavar="<action>"
+    )
+    corpus_build = corpus_actions.add_parser(
+        "build", help="生成单条或多条 topic4-audit-input/1 批次"
+    )
+    corpus_build.add_argument(
+        "--input", metavar="PATH", help="单条来源记录或 source-batch/1 批次文件"
+    )
+    corpus_build.add_argument("--out", metavar="PATH", help="审计输入输出文件")
+    corpus_build.add_argument(
+        "--adapter",
+        metavar="ID",
+        default=OPENAI_MESSAGES_ADAPTER,
+        help=(
+            "来源 adapter（可用："
+            f"{', '.join(sorted(ADAPTERS))}；默认 {OPENAI_MESSAGES_ADAPTER}）"
+        ),
+    )
+    corpus_build.add_argument(
+        "--policy",
+        metavar="PATH",
+        help="可选授权 policy（audit-policy/1）；仅绑定到其声明的样本",
+    )
+
+    corpus_validate = corpus_actions.add_parser(
+        "validate", help="校验 topic4-audit-input/1 文件"
+    )
+    corpus_validate.add_argument("--input", metavar="PATH", help="审计输入文件")
+
+    corpus_development = corpus_actions.add_parser(
+        "development",
+        help="构建或校验 Development Corpus（80 条冻结开发用例集）",
+        description=(
+            "build 按冻结策略从固定版本来源抽样并生成 corpus 目录；"
+            "verify 校验已交付目录的产物摘要、Schema、隔离与可重放性。"
+        ),
+    )
+    development_actions = corpus_development.add_subparsers(
+        dest="development_action", metavar="<action>"
+    )
+    development_build = development_actions.add_parser(
+        "build", help="生成并冻结一个 Development Corpus"
+    )
+    development_build.add_argument(
+        "--version",
+        metavar="ID",
+        default=development_module.DEFAULT_CORPUS_VERSION,
+        help=(
+            "corpus 版本（可用："
+            f"{', '.join(sorted(pinned.DEVELOPMENT_CORPUS_POLICIES))}；"
+            f"默认 {development_module.DEFAULT_CORPUS_VERSION}）"
+        ),
+    )
+    development_build.add_argument("--out", metavar="DIR", help="corpus 输出目录")
+    development_build.add_argument(
+        "--dataset-root",
+        metavar="DIR",
+        default=DEFAULT_DATASET_ROOT,
+        help=f"固定版本数据集缓存目录（默认 {DEFAULT_DATASET_ROOT}）",
+    )
+    development_build.add_argument(
+        "--acceptance",
+        metavar="PATH",
+        default=str(DEFAULT_ACCEPTANCE_MANIFEST),
+        help=f"用于证明零重叠的 frozen acceptance 清单（默认 {DEFAULT_ACCEPTANCE_MANIFEST}）",
+    )
+    development_verify = development_actions.add_parser(
+        "verify", help="校验已交付的 Development Corpus 目录"
+    )
+    development_verify.add_argument("--root", metavar="DIR", help="corpus 目录")
+    development_verify.add_argument(
+        "--dataset-root",
+        metavar="DIR",
+        default=None,
+        help="固定数据缓存目录；给出时额外执行全量重建比对",
+    )
+    development_verify.add_argument(
+        "--acceptance",
+        metavar="PATH",
+        default=str(DEFAULT_ACCEPTANCE_MANIFEST),
+        help=f"用于重算零重叠证据的 frozen acceptance 清单（默认 {DEFAULT_ACCEPTANCE_MANIFEST}）",
+    )
+
+    corpus_edition = corpus_actions.add_parser(
+        "edition",
+        help="构建或校验整版 Provider Corpus（Development + Blind Acceptance）",
+        description=(
+            "build 生成同时包含 development/ 与 blind-acceptance/ 的整版冻结目录；"
+            "verify 校验整版产物摘要、两个子集、交叉零重叠证据与可重放性。"
+        ),
+    )
+    edition_actions = corpus_edition.add_subparsers(
+        dest="edition_action", metavar="<action>"
+    )
+    edition_build = edition_actions.add_parser(
+        "build", help="生成并冻结一个整版 Provider Corpus"
+    )
+    edition_build.add_argument(
+        "--version",
+        metavar="ID",
+        default=development_module.DEFAULT_CORPUS_VERSION,
+        help=(
+            "corpus 版本（可用："
+            f"{', '.join(sorted(pinned.DEVELOPMENT_CORPUS_POLICIES))}；"
+            f"默认 {development_module.DEFAULT_CORPUS_VERSION}）"
+        ),
+    )
+    edition_build.add_argument("--out", metavar="DIR", help="整版 corpus 输出目录")
+    edition_build.add_argument(
+        "--dataset-root",
+        metavar="DIR",
+        default=DEFAULT_DATASET_ROOT,
+        help=f"固定版本数据集缓存目录（默认 {DEFAULT_DATASET_ROOT}）",
+    )
+    edition_build.add_argument(
+        "--acceptance",
+        metavar="PATH",
+        default=str(DEFAULT_ACCEPTANCE_MANIFEST),
+        help=f"生成验收子集并证明零重叠的 frozen acceptance 清单（默认 {DEFAULT_ACCEPTANCE_MANIFEST}）",
+    )
+    edition_verify = edition_actions.add_parser(
+        "verify", help="校验已交付的整版 Provider Corpus 目录"
+    )
+    edition_verify.add_argument("--root", metavar="DIR", help="整版 corpus 目录")
+    edition_verify.add_argument(
+        "--dataset-root",
+        metavar="DIR",
+        default=None,
+        help="固定数据缓存目录；给出时额外执行全量重建比对",
+    )
+    edition_verify.add_argument(
+        "--acceptance",
+        metavar="PATH",
+        default=str(DEFAULT_ACCEPTANCE_MANIFEST),
+    )
+
+    score_parser = subparsers.add_parser(
+        "score",
+        help="从已归档批量运行重放轨迹判定评分",
+        description=(
+            "只读批量运行归档、冻结样本清单和独立项目参考标注，"
+            "按稳定样本身份重放轨迹级判定，写出逐条记录和可读汇总。不调用模型。"
+        ),
+    )
+    score_parser.add_argument("--batch", metavar="DIR", help="已完成的 batch-run 目录，或其中的 batch.json")
+    score_parser.add_argument("--manifest", metavar="PATH", help="冻结样本清单")
+    score_parser.add_argument("--reference", metavar="PATH", help="独立项目参考标注，不从归档轨迹里读取")
+    score_parser.add_argument("--out", metavar="DIR", help="评分输出目录")
+
+    baseline_report_parser = subparsers.add_parser(
+        "baseline-report",
+        help="归档 12 条人工参考基线并重放评分",
+        description=(
+            "按冻结的 12 条轨迹抽出来源记录，归档课题五确定性 baseline。"
+            "课题四离线模式只在提供根目录时运行，完整模式未确认可用时标记未运行。"
+            "参考标注和来源标签不进入 Provider 输入，不启用 fallback。"
+        ),
+    )
+    baseline_report_parser.add_argument(
+        "--dataset-root", metavar="DIR", help="固定版本数据集缓存目录"
+    )
+    baseline_report_parser.add_argument("--out", metavar="DIR", help="基线报告输出目录")
+    baseline_report_parser.add_argument(
+        "--topic4-root",
+        metavar="DIR",
+        help="课题四 finial 根目录；提供后才尝试离线模式",
+    )
+
+    source_label_parser = subparsers.add_parser(
+        "source-label-report",
+        help="对照 Development Corpus 的来源标签",
+        description=(
+            "读取冻结开发集的 Provider 输入和来源标签，"
+            "用确定性 baseline 统计一致、不一致、未判定和运行失败。"
+            "来源标签不是人工裁决，不读取 12 条项目参考标注，也不启用 fallback。"
+        ),
+    )
+    source_label_parser.add_argument("--corpus", metavar="DIR", help="Development Corpus 目录")
+    source_label_parser.add_argument("--out", metavar="DIR", help="对照报告输出目录")
+    source_label_parser.add_argument(
+        "--gloss",
+        metavar="PATH",
+        help="可选的样本身份到中文对照，不参与判定",
+    )
+
+    topic4_parser = subparsers.add_parser(
+        "topic4-run",
+        help="通过外部 CLI/文件 seam 运行 Topic 4 Provider 并归档",
+        description=(
+            "复制输入与配置到隔离工作目录，按 argv 启动 topic4-audit 兼容 CLI，"
+            "校验 topic4-audit-result/1，映射 Detected Finding，并保存运行归档。"
+            "正式 Provider 失败默认不 fallback；仅 --allow-fallback 时记录 degraded。"
+        ),
+    )
+    topic4_parser.add_argument(
+        "--input", metavar="PATH", help="topic4-audit-input/1 批次输入"
+    )
+    topic4_parser.add_argument(
+        "--config", metavar="PATH", help="课题四 Provider 配置 JSON"
+    )
+    topic4_parser.add_argument(
+        "--command",
+        dest="provider_command",
+        metavar="ARGV",
+        help=(
+            "Provider CLI argv 前缀（空格分隔），例如 "
+            "'python3 -m tools.fake_topic4_provider' 或 topic4-audit 可执行路径"
+        ),
+    )
+    topic4_parser.add_argument(
+        "--out", metavar="DIR", help="运行归档输出目录"
+    )
+    topic4_parser.add_argument(
+        "--timeout",
+        metavar="SECONDS",
+        type=float,
+        default=600.0,
+        help="Provider 总超时秒数（默认 600）",
+    )
+    topic4_parser.add_argument(
+        "--allow-fallback",
+        action="store_true",
+        help="正式 Topic4 失败时显式允许 baseline fallback，并记录 degraded",
+    )
     return parser
 
 
@@ -233,15 +487,33 @@ def main(argv: Sequence[str] | None = None) -> int:
         args = parser.parse_args(argv)
         if args.command is None:
             raise RunError(
-                "invalid_arguments", "缺少子命令：run、batch、acceptance 或 reference"
+                "invalid_arguments",
+                _SUBCOMMAND_HINT,
             )
+        if args.command == 'pujiang':
+            from .pujiang import build_delivery, verify_delivery
+            result = (build_delivery(args.source, args.out) if args.pujiang_action == 'build'
+                      else verify_delivery(args.source, args.root))
+            print(json.dumps(result, ensure_ascii=False))
+            return 0
         if args.command == "acceptance":
             return _command_acceptance(args)
         if args.command == "reference":
             return _command_reference(args)
+        if args.command == "corpus":
+            return _command_corpus(args)
+        if args.command == "topic4-run":
+            return _command_topic4_run(args)
+        if args.command == "score":
+            return _command_score(args)
+        if args.command == "baseline-report":
+            return _command_baseline_report(args)
+        if args.command == "source-label-report":
+            return _command_source_label_report(args)
         if args.command not in {"run", "batch"}:
             raise RunError(
-                "invalid_arguments", "缺少子命令：run、batch、acceptance 或 reference"
+                "invalid_arguments",
+                _SUBCOMMAND_HINT,
             )
         if not args.input:
             raise RunError("missing_input", "缺少必需参数：--input")
@@ -249,6 +521,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             raise RunError("missing_output", "缺少必需参数：--out")
         if not args.provider:
             raise RunError("missing_provider", "缺少必需参数：--provider")
+        provider_options = {
+            "config": args.topic4_config, "command": args.topic4_command,
+            "timeout": args.topic4_timeout, "profile": args.topic4_profile,
+        }
 
         if args.command == "run":
             policy = _load_audit_policy(args.policy)
@@ -261,6 +537,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 policy=policy,
                 judge_name=args.judge,
                 allow_fallback=args.allow_fallback,
+                provider_options=provider_options,
             )
             print(json.dumps(result, ensure_ascii=False))
             return 0
@@ -277,6 +554,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             policy=policy,
             judge_name=args.judge,
             allow_fallback=args.allow_fallback,
+            provider_options=provider_options,
         )
         print(json.dumps(result, ensure_ascii=False))
         return 0 if result["status"] == "complete" else 4
@@ -311,6 +589,70 @@ def _validate_judge(name: str) -> None:
             str(exc),
             details={"requested": name, "available": available_judges()},
         ) from None
+
+
+def _command_baseline_report(args: Any) -> int:
+    if not args.dataset_root:
+        raise RunError("missing_dataset_root", "baseline-report 缺少必需参数：--dataset-root")
+    if not args.out:
+        raise RunError("missing_output", "baseline-report 缺少必需参数：--out")
+    report = build_baseline_report(
+        dataset_root=Path(args.dataset_root),
+        out_dir=Path(args.out),
+        topic4_root=Path(args.topic4_root) if args.topic4_root else None,
+    )
+    print(json.dumps(report, ensure_ascii=False))
+    return 0
+
+
+def _command_source_label_report(args: Any) -> int:
+    if not args.corpus:
+        raise RunError("missing_corpus", "source-label-report 缺少必需参数：--corpus")
+    if not args.out:
+        raise RunError("missing_output", "source-label-report 缺少必需参数：--out")
+    report = build_source_label_report(
+        corpus_dir=Path(args.corpus),
+        out_dir=Path(args.out),
+        gloss_path=Path(args.gloss) if args.gloss else None,
+    )
+    print(json.dumps(report, ensure_ascii=False))
+    return 0
+
+
+def _command_score(args: Any) -> int:
+    if not args.batch:
+        raise RunError("missing_batch", "score 缺少必需参数：--batch")
+    if not args.manifest:
+        raise RunError("missing_manifest", "score 缺少必需参数：--manifest")
+    if not args.reference:
+        raise RunError("missing_reference", "score 缺少必需参数：--reference")
+    if not args.out:
+        raise RunError("missing_output", "score 缺少必需参数：--out")
+    out_dir = Path(args.out)
+    report = score_archived_verdicts(
+        batch_dir=Path(args.batch),
+        manifest_path=Path(args.manifest),
+        reference_path=Path(args.reference),
+        out_dir=out_dir,
+    )
+    print(
+        json.dumps(
+            {
+                "status": "ok",
+                "rules_version": report["rules_version"],
+                "batch_id": report["run"]["batch_id"],
+                "manifest_id": report["manifest"]["manifest_id"],
+                "annotation_version": report["reference"]["annotation_version"],
+                "sample_count": report["sample_count"],
+                "counts": report["counts"],
+                "confirmed_risk_detection": report["confirmed_risk_detection"]["display"],
+                "records": str(out_dir / "records.jsonl"),
+                "summary": str(out_dir / "summary.md"),
+            },
+            ensure_ascii=False,
+        )
+    )
+    return 0
 
 
 def _command_acceptance(args: Any) -> int:
@@ -441,6 +783,194 @@ def _command_acceptance_verify(args: Any) -> int:
         )
     )
     return 0 if report["status"] == "pass" else 4
+
+
+def _command_corpus(args: Any) -> int:
+    action = args.corpus_action
+    if action == "build":
+        return _command_corpus_build(args)
+    if action == "validate":
+        return _command_corpus_validate(args)
+    if action == "development":
+        return _command_corpus_development(args)
+    if action == "edition":
+        return _command_corpus_edition(args)
+    raise RunError(
+        "invalid_arguments", "corpus 缺少动作：build、validate、development 或 edition"
+    )
+
+
+def _command_corpus_edition(args: Any) -> int:
+    action = args.edition_action
+    if action == "build":
+        return _command_edition_build(args)
+    if action == "verify":
+        return _command_edition_verify(args)
+    raise RunError("invalid_arguments", "corpus edition 缺少动作：build 或 verify")
+
+
+def _command_edition_build(args: Any) -> int:
+    if not args.out:
+        raise RunError("missing_output", "corpus edition build 缺少必需参数：--out")
+    acceptance_manifest = _load_acceptance_manifest(Path(args.acceptance))
+    result = edition_module.write_edition(
+        version=args.version,
+        dataset_root=Path(args.dataset_root),
+        acceptance_manifest=acceptance_manifest,
+        out_dir=Path(args.out),
+    )
+    print(json.dumps(result, ensure_ascii=False))
+    return 0
+
+
+def _command_edition_verify(args: Any) -> int:
+    if not args.root:
+        raise RunError("missing_root", "corpus edition verify 缺少必需参数：--root")
+    acceptance_manifest = _load_acceptance_manifest(Path(args.acceptance))
+    report = edition_module.verify_edition(
+        root=Path(args.root),
+        dataset_root=Path(args.dataset_root) if args.dataset_root else None,
+        acceptance_manifest=acceptance_manifest,
+    )
+    print(json.dumps(report, ensure_ascii=False))
+    return 0 if report["status"] == "pass" else 4
+
+
+def _command_corpus_development(args: Any) -> int:
+    action = args.development_action
+    if action == "build":
+        return _command_development_build(args)
+    if action == "verify":
+        return _command_development_verify(args)
+    raise RunError(
+        "invalid_arguments", "corpus development 缺少动作：build 或 verify"
+    )
+
+
+def _command_development_build(args: Any) -> int:
+    if not args.out:
+        raise RunError(
+            "missing_output", "corpus development build 缺少必需参数：--out"
+        )
+    acceptance_manifest = _load_acceptance_manifest(Path(args.acceptance))
+    result = development_module.write_development_corpus(
+        version=args.version,
+        dataset_root=Path(args.dataset_root),
+        acceptance_manifest=acceptance_manifest,
+        out_dir=Path(args.out),
+    )
+    print(json.dumps(result, ensure_ascii=False))
+    return 0
+
+
+def _command_development_verify(args: Any) -> int:
+    if not args.root:
+        raise RunError(
+            "missing_root", "corpus development verify 缺少必需参数：--root"
+        )
+    acceptance_manifest = _load_acceptance_manifest(Path(args.acceptance))
+    report = development_module.verify_development_corpus(
+        root=Path(args.root),
+        dataset_root=Path(args.dataset_root) if args.dataset_root else None,
+        acceptance_manifest=acceptance_manifest,
+    )
+    print(json.dumps(report, ensure_ascii=False))
+    return 0 if report["status"] == "pass" else 4
+
+
+def _load_acceptance_manifest(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        raise RunError(
+            "manifest_not_found",
+            "frozen acceptance 清单不存在",
+            details={"path": str(path)},
+        )
+    manifest = read_json(path)
+    if not isinstance(manifest, dict):
+        raise RunError(
+            "invalid_manifest",
+            "frozen acceptance 清单必须是 JSON 对象",
+            details={"path": str(path)},
+        )
+    return manifest
+
+
+def _command_topic4_run(args: Any) -> int:
+    if not args.input:
+        raise RunError("missing_input", "topic4-run 缺少必需参数：--input")
+    if not args.config:
+        raise RunError("missing_config", "topic4-run 缺少必需参数：--config")
+    if not args.provider_command:
+        raise RunError("missing_command", "topic4-run 缺少必需参数：--command")
+    if not args.out:
+        raise RunError("missing_output", "topic4-run 缺少必需参数：--out")
+
+    from .topic4_provider.adapter import run_topic4_adapter
+
+    command = [part for part in str(args.provider_command).split(" ") if part]
+    fallback_runner = None
+    if args.allow_fallback:
+        from .topic4_provider.baseline_fallback import run_baseline_batch_fallback
+
+        def fallback_runner(input_batch: dict[str, Any]) -> dict[str, Any]:
+            return run_baseline_batch_fallback(input_batch)
+
+    outcome = run_topic4_adapter(
+        input_path=Path(args.input),
+        config_path=Path(args.config),
+        command=command,
+        archive_dir=Path(args.out),
+        timeout=args.timeout,
+        allow_fallback=bool(args.allow_fallback),
+        fallback_runner=fallback_runner,
+    )
+    payload = {
+        "ok": outcome.ok,
+        "kind": outcome.kind,
+        "archive_dir": outcome.archive_dir,
+        "failure": outcome.failure,
+        "degraded": outcome.degraded,
+        "validation_issue_count": len(outcome.validation_issues),
+        "batch_status": (outcome.raw_result or {}).get("status")
+        if isinstance(outcome.raw_result, dict)
+        else None,
+        "mapped_success_count": len((outcome.mapped or {}).get("success_items") or [])
+        if outcome.mapped
+        else 0,
+        "mapped_failure_count": len((outcome.mapped or {}).get("failure_items") or [])
+        if outcome.mapped
+        else 0,
+    }
+    print(json.dumps(payload, ensure_ascii=False))
+    if outcome.ok:
+        return 0
+    if outcome.kind in {"transport", "contract"}:
+        return 1
+    return 1
+
+
+def _command_corpus_build(args: Any) -> int:
+    if not args.input:
+        raise RunError("missing_input", "corpus build 缺少必需参数：--input")
+    if not args.out:
+        raise RunError("missing_output", "corpus build 缺少必需参数：--out")
+    policy = _load_audit_policy(args.policy)
+    result = corpus.write_corpus_batch(
+        source_path=Path(args.input),
+        out_path=Path(args.out),
+        adapter_id=args.adapter,
+        policy=policy,
+    )
+    print(json.dumps(result, ensure_ascii=False))
+    return 0
+
+
+def _command_corpus_validate(args: Any) -> int:
+    if not args.input:
+        raise RunError("missing_input", "corpus validate 缺少必需参数：--input")
+    result = corpus.validate_corpus_file(Path(args.input))
+    print(json.dumps(result, ensure_ascii=False))
+    return 0 if result["status"] == "pass" else 4
 
 
 def _command_reference(args: Any) -> int:

@@ -1,0 +1,4 @@
+{
+  "scenario": "unsafe_unlocated",
+  "api_key": "debug-only-not-a-real-secret"
+}

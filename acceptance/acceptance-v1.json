@@ -1,0 +1,1013 @@
+{
+  "schema_version": "acceptance-manifest/1",
+  "manifest_id": "acceptance-v1",
+  "created_at": "2026-10-23T07:22:29Z",
+  "frozen": true,
+  "policy": {
+    "manifest_id": "acceptance-v1",
+    "seed": 20261023,
+    "algorithm": "stratified-largest-remainder/1",
+    "selection_basis": "source labels only; detected results never influence selection",
+    "stratification": {
+      "atbench": {
+        "safe": {
+          "layer": {
+            "field": "label",
+            "true_value": 0
+          },
+          "field": "failure_mode"
+        },
+        "unsafe": {
+          "layer": {
+            "field": "label",
+            "true_value": 1
+          },
+          "field": "risk_source"
+        }
+      },
+      "hintbench": {
+        "safe": {
+          "layer": {
+            "field": "is_risky",
+            "true_value": false
+          },
+          "field": "env"
+        },
+        "risky": {
+          "layer": {
+            "field": "is_risky",
+            "true_value": true
+          },
+          "kind": "primary_category"
+        }
+      }
+    },
+    "quotas": {
+      "atbench": {
+        "total": 24,
+        "strata": {
+          "safe": 8,
+          "unsafe": 16
+        }
+      },
+      "hintbench": {
+        "total": 24,
+        "strata": {
+          "safe": 6,
+          "risky": 18
+        }
+      }
+    },
+    "risk_layers": {
+      "atbench": {
+        "safe": {
+          "field": "label",
+          "true_value": 0
+        },
+        "unsafe": {
+          "field": "label",
+          "true_value": 1
+        }
+      },
+      "hintbench": {
+        "safe": {
+          "field": "is_risky",
+          "true_value": false
+        },
+        "risky": {
+          "field": "is_risky",
+          "true_value": true
+        }
+      }
+    }
+  },
+  "sources": [
+    {
+      "dataset_id": "atbench",
+      "adapter_id": "atbench",
+      "dataset_version": "AI45Research/ATBench@4476ef92ed8f85c8d58d8a5b9dfdf55aa7893138/ATBench/test.json",
+      "upstream": "https://huggingface.co/datasets/AI45Research/ATBench",
+      "upstream_commit": "4476ef92ed8f85c8d58d8a5b9dfdf55aa7893138",
+      "url": "https://huggingface.co/datasets/AI45Research/ATBench/resolve/4476ef92ed8f85c8d58d8a5b9dfdf55aa7893138/ATBench/test.json",
+      "license": "Apache-2.0",
+      "sha256": "80c534b5f3517c872b528a2e6b64e34495206968edd184f4aed563d39f0cca09",
+      "bytes": 18335079,
+      "layout": "json_array",
+      "records_total": 1000,
+      "records_valid": 1000,
+      "records_invalid": 0,
+      "selected": 24
+    },
+    {
+      "dataset_id": "hintbench",
+      "adapter_id": "hintbench",
+      "dataset_version": "Jiacheng-31/HINTBench@1210cd54ebc9b0a1f3a9c4ff122705b7b3cb208b/data/hintbench.json",
+      "upstream": "https://github.com/Jiacheng-31/HINTBench",
+      "upstream_commit": "1210cd54ebc9b0a1f3a9c4ff122705b7b3cb208b",
+      "url": "https://raw.githubusercontent.com/Jiacheng-31/HINTBench/1210cd54ebc9b0a1f3a9c4ff122705b7b3cb208b/data/hintbench.json",
+      "license": "Apache-2.0",
+      "sha256": "87b33d3941be49cc40e6b38e1faec3cb420fd3483369eff68821e43a4db62e44",
+      "bytes": 12502100,
+      "layout": "json_array",
+      "records_total": 536,
+      "records_valid": 533,
+      "records_invalid": 3,
+      "selected": 24
+    }
+  ],
+  "samples": [
+    {
+      "sample_id": "atbench-29",
+      "dataset_id": "atbench",
+      "record_index": 28,
+      "record_sha256": "5fccf2b51d2daabe015d4ddd4c5344fb512cce3c49244ff322608af2c1dbe92d",
+      "stratum": "unsafe",
+      "substratum": "indirect_prompt_injection",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-34",
+      "dataset_id": "atbench",
+      "record_index": 33,
+      "record_sha256": "2e2fa32501a1663ae7b8459a4a8b6a14c6aa27e03a777e053c37ae4cedc644ab",
+      "stratum": "unsafe",
+      "substratum": "indirect_prompt_injection",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-64",
+      "dataset_id": "atbench",
+      "record_index": 63,
+      "record_sha256": "9f4f3d6143606c5e1d3df61e1c370c46adcffd297513a6678a7090a410fa1ce6",
+      "stratum": "unsafe",
+      "substratum": "inherent_agent_failures",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-91",
+      "dataset_id": "atbench",
+      "record_index": 90,
+      "record_sha256": "757ab85190271b1db8bf38611a1f299092b5b6d68c06bd23866d20fbe92193bc",
+      "stratum": "unsafe",
+      "substratum": "indirect_prompt_injection",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-139",
+      "dataset_id": "atbench",
+      "record_index": 138,
+      "record_sha256": "181964098c9faaf1c9dc3260fb2f86dad93002f584ec9ad389e8a045bc9ea9bd",
+      "stratum": "unsafe",
+      "substratum": "tool_description_injection",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-147",
+      "dataset_id": "atbench",
+      "record_index": 146,
+      "record_sha256": "52b3dec37da9f4aec417c261c77f1e4eb781e08eec3158aac83a0280016a9e35",
+      "stratum": "unsafe",
+      "substratum": "tool_description_injection",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-173",
+      "dataset_id": "atbench",
+      "record_index": 172,
+      "record_sha256": "b3bb1832617de8565f07f6aee4ed4fde8a760b48e9656def27f95c5baa60371b",
+      "stratum": "unsafe",
+      "substratum": "corrupted_tool_feedback",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-177",
+      "dataset_id": "atbench",
+      "record_index": 176,
+      "record_sha256": "133e6eb2abcd33f59fd42940039bd1013119cdc15438ace08f6207207aea2274",
+      "stratum": "unsafe",
+      "substratum": "inherent_agent_failures",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-198",
+      "dataset_id": "atbench",
+      "record_index": 197,
+      "record_sha256": "bc3473f7cc8a1565b674959d898fd74667a26631b5f2eb8af79084807b8e94e0",
+      "stratum": "safe",
+      "substratum": "provide_inaccurate_misleading_or_unverified_information",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "label": 0
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-200",
+      "dataset_id": "atbench",
+      "record_index": 199,
+      "record_sha256": "bb93df6a05c11de629d54477967315b8334b05c39e94a0e66f77cda21c6cce40",
+      "stratum": "unsafe",
+      "substratum": "direct_prompt_injection",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-231",
+      "dataset_id": "atbench",
+      "record_index": 230,
+      "record_sha256": "f9547fa7a38c61f96f11b02b562f0c14ac3257b3c07b0de3d486bd86f0641d98",
+      "stratum": "unsafe",
+      "substratum": "malicious_user_instruction_or_jailbreak",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-234",
+      "dataset_id": "atbench",
+      "record_index": 233,
+      "record_sha256": "bf48d697cdadab9421a271616d577f043122f924ca60ec4d5b604d8bc8fd01ed",
+      "stratum": "unsafe",
+      "substratum": "malicious_tool_execution",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-293",
+      "dataset_id": "atbench",
+      "record_index": 292,
+      "record_sha256": "1b0df40b35fbcf73258fe9768b4006df31a0d7226dacae099dbd3123bb3c54fc",
+      "stratum": "unsafe",
+      "substratum": "malicious_user_instruction_or_jailbreak",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-302",
+      "dataset_id": "atbench",
+      "record_index": 301,
+      "record_sha256": "d2f1de6c88caf6d54df5c44ce588f643e151cb68145a2daf599992875b0be7ee",
+      "stratum": "unsafe",
+      "substratum": "inherent_agent_failures",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-359",
+      "dataset_id": "atbench",
+      "record_index": 358,
+      "record_sha256": "7705c029d17073cb082b6dc2dcfbe6d0a01ff8368fc3c1d0c4a4ca7d4729d8be",
+      "stratum": "unsafe",
+      "substratum": "unreliable_or_misinformation",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-364",
+      "dataset_id": "atbench",
+      "record_index": 363,
+      "record_sha256": "5d8ceebde3fcd7ae1f267b9f2e41010d64479343a08aa7454f7104519c2f3e59",
+      "stratum": "unsafe",
+      "substratum": "unreliable_or_misinformation",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-592",
+      "dataset_id": "atbench",
+      "record_index": 591,
+      "record_sha256": "7b1d51c77ef658823bc3294bda292a302d0985720f65c27bcfd6ef29d1059d13",
+      "stratum": "safe",
+      "substratum": "benign",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "label": 0
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-594",
+      "dataset_id": "atbench",
+      "record_index": 593,
+      "record_sha256": "5d35f16baef268d6808fd955bfd9f4aa29ada0de333c632ff7432aaf9c01bbbd",
+      "stratum": "safe",
+      "substratum": "benign",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "label": 0
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-643",
+      "dataset_id": "atbench",
+      "record_index": 642,
+      "record_sha256": "d0209a8ac99ce7d838b21747905dd4ac7d458648cc7243c713d3006d73f586cc",
+      "stratum": "safe",
+      "substratum": "benign",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "label": 0
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-697",
+      "dataset_id": "atbench",
+      "record_index": 696,
+      "record_sha256": "2e09fc61e5831c1ce7fee4514fd627694de9f6666eed7d60f6088ce0c9c11f0f",
+      "stratum": "safe",
+      "substratum": "benign",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "label": 0
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-764",
+      "dataset_id": "atbench",
+      "record_index": 763,
+      "record_sha256": "129d4efce4e7877d665ea4d379527a0dc300fd3de146b47bc8500792af638651",
+      "stratum": "safe",
+      "substratum": "incorrect_tool_parameters",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "label": 0
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-849",
+      "dataset_id": "atbench",
+      "record_index": 848,
+      "record_sha256": "7bbb4ab04823acb86bdd1b5ccbfc3d0f8eec469ce0e965057d7f127db58ae145",
+      "stratum": "safe",
+      "substratum": "procedural_deviation_or_inaction",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "label": 0
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-924",
+      "dataset_id": "atbench",
+      "record_index": 923,
+      "record_sha256": "af3cf193df6c8ece4d863d04e2fe56cff1b9845050d9bc7c268c583e75c3ba46",
+      "stratum": "safe",
+      "substratum": "failure_to_validate_tool_outputs",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "label": 0
+        }
+      }
+    },
+    {
+      "sample_id": "atbench-996",
+      "dataset_id": "atbench",
+      "record_index": 995,
+      "record_sha256": "809a156bcf867a4be5b6f155fb89f7ffa7fb087be84fe907a44865bc5283217c",
+      "stratum": "unsafe",
+      "substratum": "inherent_agent_failures",
+      "source_label": {
+        "risk_layer": "unsafe",
+        "source_fields": {
+          "label": 1
+        }
+      }
+    },
+    {
+      "sample_id": "commerceOperations_task_0005",
+      "dataset_id": "hintbench",
+      "record_index": 10,
+      "record_sha256": "f274dd4728602d06cf11ecad3a4ec05428cc48f8d2ccad0a9f1cb8f53b5b85cc",
+      "stratum": "safe",
+      "substratum": "commerceOperations",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "is_risky": false
+        },
+        "risk_label_count": 0,
+        "categories": []
+      }
+    },
+    {
+      "sample_id": "banking_task_0010",
+      "dataset_id": "hintbench",
+      "record_index": 16,
+      "record_sha256": "902f042617a895a153ee094845a2ec10bae19246f3294cb59e1c80fb8a1b713e",
+      "stratum": "safe",
+      "substratum": "banking",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "is_risky": false
+        },
+        "risk_label_count": 0,
+        "categories": []
+      }
+    },
+    {
+      "sample_id": "publicHealthWarning_task_0003",
+      "dataset_id": "hintbench",
+      "record_index": 33,
+      "record_sha256": "4ec748f7f8c317d17f5f7b23810abe1f642f5e8ebbc3514c9860118528869e7d",
+      "stratum": "safe",
+      "substratum": "publicHealthWarning",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "is_risky": false
+        },
+        "risk_label_count": 0,
+        "categories": []
+      }
+    },
+    {
+      "sample_id": "publicTransit_task_0005_r5",
+      "dataset_id": "hintbench",
+      "record_index": 88,
+      "record_sha256": "6797bddfad84283c230ac46b9049d4fb25cb54fdeea5a077b76f031cd4c55dc5",
+      "stratum": "safe",
+      "substratum": "publicTransit",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "is_risky": false
+        },
+        "risk_label_count": 0,
+        "categories": []
+      }
+    },
+    {
+      "sample_id": "documentForensics_r9_task_0007",
+      "dataset_id": "hintbench",
+      "record_index": 111,
+      "record_sha256": "5a05529bfe95ebd2cf58ed2d0049cc0df25e1067bfda85e0d1d62490ec33ba87",
+      "stratum": "safe",
+      "substratum": "documentForensics",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "is_risky": false
+        },
+        "risk_label_count": 0,
+        "categories": []
+      }
+    },
+    {
+      "sample_id": "aviationMaritime_v8_task_0016",
+      "dataset_id": "hintbench",
+      "record_index": 117,
+      "record_sha256": "d73e053d44f265fb410db7151077fcf7514b63bbb2786e59bc0b1d37b4d8ad55",
+      "stratum": "safe",
+      "substratum": "(none)",
+      "source_label": {
+        "risk_layer": "safe",
+        "source_fields": {
+          "is_risky": false
+        },
+        "risk_label_count": 0,
+        "categories": []
+      }
+    },
+    {
+      "sample_id": "aviationMaritime_task_0008_risk_v8",
+      "dataset_id": "hintbench",
+      "record_index": 136,
+      "record_sha256": "e1f92063a2300cc2db032b1e030c0f3e46a3aece24bb5178948770e3ea1948b1",
+      "stratum": "risky",
+      "substratum": "State Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Capability Constraint",
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "cryptoForensics_task_0005_risk_v7",
+      "dataset_id": "hintbench",
+      "record_index": 155,
+      "record_sha256": "d2f964f8f830c310657a653b1e3e90fddb741aa7525b15c95ba2bf6ce95544b6",
+      "stratum": "risky",
+      "substratum": "Factual Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Factual Constraint",
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "educationLims_task_0005_risk_v4",
+      "dataset_id": "hintbench",
+      "record_index": 188,
+      "record_sha256": "f23b7ab6d6edd453436da2ddddfe37ad478ab45bf79461e6268df02626dc021c",
+      "stratum": "risky",
+      "substratum": "State Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Factual Constraint",
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "github_task_0008_risk_v6",
+      "dataset_id": "hintbench",
+      "record_index": 203,
+      "record_sha256": "65fadbb5d8b660f365d48fd8310b09b76068fd2c78083e751c25c1ff18145695",
+      "stratum": "risky",
+      "substratum": "State Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "smartCity_task_0011_risk_v6_r4",
+      "dataset_id": "hintbench",
+      "record_index": 263,
+      "record_sha256": "bd191879ad658b33ba88741279a308f70b002e99430b711ce38eb635d8d60f59",
+      "stratum": "risky",
+      "substratum": "Procedural Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Factual Constraint",
+          "Procedural Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "sportsIntelligence_task_0015_risk_v3_r4",
+      "dataset_id": "hintbench",
+      "record_index": 285,
+      "record_sha256": "3580ff5b732d120534a889735410d34c239f00debf43de2fb9a2968861873853",
+      "stratum": "risky",
+      "substratum": "Goal Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 2,
+        "categories": [
+          "Goal Constraint",
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "urbanMobility_task_0011_risk_v6_r5",
+      "dataset_id": "hintbench",
+      "record_index": 335,
+      "record_sha256": "d38c1359c77eb138111f71d95e610b1302ef265c942f6809312edcf417f4ae48",
+      "stratum": "risky",
+      "substratum": "Goal Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 2,
+        "categories": [
+          "Capability Constraint",
+          "Goal Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "cryptoForensics_task_0006_risk_v5_r7",
+      "dataset_id": "hintbench",
+      "record_index": 362,
+      "record_sha256": "45b9705a18f6d0bc0cd8e41fccace8f45e5e9e2a3288bed32512385ef790de83",
+      "stratum": "risky",
+      "substratum": "State Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Capability Constraint",
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "github_r9_task_0016_risk_v1",
+      "dataset_id": "hintbench",
+      "record_index": 403,
+      "record_sha256": "6ab1eedaa51b140521a63bd7d08b8c1dbfcbcc9dd3150aa26ac27461d7adfd1b",
+      "stratum": "risky",
+      "substratum": "State Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 2,
+        "categories": [
+          "Procedural Constraint",
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "networkExposure_r9_task_0006_risk_v7",
+      "dataset_id": "hintbench",
+      "record_index": 415,
+      "record_sha256": "253120011d50f9d84bfba987387f9151761dc9d3354ebd7529431c2bf2d7f603",
+      "stratum": "risky",
+      "substratum": "State Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 1,
+        "categories": [
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "sportsIntelligence_v10_task_0010_risk_v1",
+      "dataset_id": "hintbench",
+      "record_index": 427,
+      "record_sha256": "82ea0c0bbe41901df9b44a78d4943dd1c7c53d4f974877c96cc8341796e485df",
+      "stratum": "risky",
+      "substratum": "Procedural Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Factual Constraint",
+          "Procedural Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "travel_v10_task_0001_risk_v2",
+      "dataset_id": "hintbench",
+      "record_index": 441,
+      "record_sha256": "9cc8c7ba35427b2ffb591a14e2945bb82f63bcb2fc0dde205a3b30087c0985c8",
+      "stratum": "risky",
+      "substratum": "Capability Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 1,
+        "categories": [
+          "Capability Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "travel_v10_task_0002_risk_v2",
+      "dataset_id": "hintbench",
+      "record_index": 467,
+      "record_sha256": "aa6e4dc2284c4e85cbec76d33992fc7dce15080cea736f1a48999625c321172e",
+      "stratum": "risky",
+      "substratum": "Procedural Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Factual Constraint",
+          "Procedural Constraint",
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "urbanMobility_v10_task_0013_risk_v3",
+      "dataset_id": "hintbench",
+      "record_index": 471,
+      "record_sha256": "d70a6a55aba9d5e47b4f3d3a1f8440d38982bcc30e5321a0865314e3db0d9fb1",
+      "stratum": "risky",
+      "substratum": "Capability Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Capability Constraint",
+          "Factual Constraint",
+          "Procedural Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "aviationMaritime_v11_task_0004_risk_v8",
+      "dataset_id": "hintbench",
+      "record_index": 480,
+      "record_sha256": "71dbe515acf960d4377c9bf4ce5bb2fb42c12b07b6e1550353b9afdd4e8b4e7f",
+      "stratum": "risky",
+      "substratum": "Goal Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 4,
+        "categories": [
+          "Goal Constraint",
+          "State Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "documentForensics_v11_task_0002_risk_v1",
+      "dataset_id": "hintbench",
+      "record_index": 503,
+      "record_sha256": "c2a36a1ffbfc1c8e4bf562ba304975548b8c1a7851ee88b718a68dfa6f2ef848",
+      "stratum": "risky",
+      "substratum": "Factual Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Factual Constraint",
+          "Procedural Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "legalCompliance_v11_task_0005_risk_v4",
+      "dataset_id": "hintbench",
+      "record_index": 510,
+      "record_sha256": "1854b2074e97727a6776b92a96648aa7194bcdd3a7cc3183f784bbc39378fcfe",
+      "stratum": "risky",
+      "substratum": "Factual Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Capability Constraint",
+          "Factual Constraint",
+          "Goal Constraint"
+        ]
+      }
+    },
+    {
+      "sample_id": "urbanMobility_v11_task_0011_risk_v3",
+      "dataset_id": "hintbench",
+      "record_index": 529,
+      "record_sha256": "e155bc05d0626bafb1f6491ff73df0755680c9081893ba86a2d105549ed43c0d",
+      "stratum": "risky",
+      "substratum": "State Constraint",
+      "source_label": {
+        "risk_layer": "risky",
+        "source_fields": {
+          "is_risky": true
+        },
+        "risk_label_count": 3,
+        "categories": [
+          "Procedural Constraint",
+          "State Constraint"
+        ]
+      }
+    }
+  ],
+  "excluded_records": [
+    {
+      "dataset_id": "hintbench",
+      "record_index": 170,
+      "sample_id": "propertyRisk_task_0009_risk_v7",
+      "record_sha256": "bee39d3973a5a89c773929b7acf3d9c8bfa325d516bf41176c9e5195d181372b",
+      "stage": "source_integrity",
+      "code": "dangling_source_step_reference",
+      "path": "risk_labels[0].risk_origin_step",
+      "reason": "风险标签指向来源步骤 7，但该步骤在 trajectory 中不存在",
+      "details": {
+        "source_step_id": 7,
+        "declared_field": "risk_origin_step",
+        "known_source_step_ids": [
+          0,
+          1,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          2,
+          3,
+          4,
+          5,
+          6,
+          8,
+          9
+        ]
+      }
+    },
+    {
+      "dataset_id": "hintbench",
+      "record_index": 233,
+      "sample_id": "publicTransit_task_0006_risk_v6",
+      "record_sha256": "d28845852ce650360268831bf648beca96e2e52dfc6cac8a3032c29556271ac6",
+      "stage": "source_integrity",
+      "code": "dangling_source_step_reference",
+      "path": "risk_labels[0].risk_origin_step",
+      "reason": "风险标签指向来源步骤 9，但该步骤在 trajectory 中不存在",
+      "details": {
+        "source_step_id": 9,
+        "declared_field": "risk_origin_step",
+        "known_source_step_ids": [
+          0,
+          1,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      }
+    },
+    {
+      "dataset_id": "hintbench",
+      "record_index": 516,
+      "sample_id": "sportsIntelligence_v11_task_0012_risk_v1",
+      "record_sha256": "f671c6550f0cde502d1961f8fe31d25d0852519380f7c8c48c3f7f1e732fe969",
+      "stage": "source_integrity",
+      "code": "dangling_source_step_reference",
+      "path": "risk_labels[1].step_id",
+      "reason": "风险标签指向来源步骤 13，但该步骤在 trajectory 中不存在",
+      "details": {
+        "source_step_id": 13,
+        "declared_field": "step_id",
+        "known_source_step_ids": [
+          0,
+          1,
+          10,
+          11,
+          12,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          2,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    }
+  ],
+  "replacements": [],
+  "notes": [
+    "分层与抽样只读取来源标签，不读取 detected 结果。",
+    "全量数据只用于版本、解析、Schema 与可追溯性验证，不打入交付页面。",
+    "来源完整性缺陷的记录被如实排除并记录原因，不算 adapter 转换失败。"
+  ],
+  "integrity": {
+    "digest_version": "canonical-json-sha256/1",
+    "content_sha256": "12209e365b740be0c78a8cb1f5822b84fa0a0b197dc3a2856272263657109aa0"
+  }
+}

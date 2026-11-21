@@ -1,0 +1,14 @@
+{
+  "name": "nonzero_exit",
+  "provider_config": {
+    "scenario": "nonzero_exit"
+  },
+  "input": "fixtures/topic4_provider/single_input_batch.json",
+  "expect": {
+    "exit_code": 1,
+    "output_present": true,
+    "json_invalid": true,
+    "forbid_semantic_on_nonzero": true,
+    "treat_nonzero_output_as_diagnostic_only": true
+  }
+}

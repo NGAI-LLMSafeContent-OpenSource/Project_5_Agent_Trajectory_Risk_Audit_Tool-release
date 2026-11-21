@@ -1,0 +1,11 @@
+{
+  "name": "duplicate_sample",
+  "provider_config": {
+    "scenario": "duplicate_sample"
+  },
+  "input": "fixtures/topic4_provider/single_input_batch.json",
+  "expect": {
+    "exit_code": 0,
+    "json_object": true
+  }
+}

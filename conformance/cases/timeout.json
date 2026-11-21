@@ -1,0 +1,13 @@
+{
+  "name": "timeout",
+  "provider_config": {
+    "scenario": "timeout",
+    "sleep_seconds": 5
+  },
+  "input": "fixtures/topic4_provider/single_input_batch.json",
+  "timeout_seconds": 1,
+  "expect": {
+    "exit_code": null,
+    "timed_out": true
+  }
+}

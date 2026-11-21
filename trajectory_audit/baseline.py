@@ -34,6 +34,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from . import __version__
+from .audit_input import project_policy, project_trajectory
 from .judge import resolve_judge, run_judge
 from .model import (
     LINK_STATUS_UNKNOWN_CALL_ID,
@@ -1382,8 +1383,11 @@ def audit(
 
     judge_record = run_judge(
         judge if judge is not None else resolve_judge(judge_name),
-        trajectory=trajectory.to_dict(),
-        policy=policy,
+        # 语义 Judge 与课题四 provider 使用同一个白名单投影：不接收
+        # ``trajectory/2`` 中的来源标签、reference、source/raw、数据集身份，
+        # 也不接收 policy 的本地来源路径与文件哈希。
+        trajectory=project_trajectory(trajectory),
+        policy=project_policy(policy),
         findings=builder.items,
     )
 

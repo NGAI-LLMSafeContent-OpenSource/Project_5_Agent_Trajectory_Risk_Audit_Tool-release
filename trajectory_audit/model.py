@@ -281,6 +281,7 @@ class Finding:
     rule_id: str
     rule_version: str
     basis: str = "structural_rule"
+    provider_native: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -297,6 +298,7 @@ class Finding:
                 "version": self.rule_version,
                 "basis": self.basis,
             },
+            **({"provider_native": self.provider_native} if self.provider_native is not None else {}),
         }
 
 
@@ -355,6 +357,7 @@ class AuditResult:
     policy: dict[str, Any] | None = None
     judge: dict[str, Any] | None = None
     degraded: dict[str, Any] | None = None
+    provider_result: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -371,6 +374,7 @@ class AuditResult:
             "judge": self.judge,
             "degraded": self.degraded,
             "evaluated_at": self.evaluated_at,
+            **({"provider_result": self.provider_result} if self.provider_result is not None else {}),
         }
 
 
@@ -383,3 +387,4 @@ class ProviderOutput:
     policy: dict[str, Any] | None = None
     judge: dict[str, Any] | None = None
     degraded: dict[str, Any] | None = None
+    provider_result: dict[str, Any] | None = None

@@ -315,7 +315,9 @@ class PublicRunEntryPointTest(unittest.TestCase):
             run = read_json(Path(result["run_dir"]) / "run.json")
             self.assertRegex(run["audit_rules_sha256"], r"^[0-9a-f]{64}$")
             self.assertEqual(run["adapter"]["id"], "openai-messages")
-            self.assertEqual(run["adapter"]["version"], run["provider"]["version"])
+            from trajectory_audit.openai_messages import ADAPTER_VERSION
+            self.assertEqual(run["adapter"]["version"], ADAPTER_VERSION)
+            self.assertTrue(run["provider"]["version"])
 
 
 

@@ -1,0 +1,215 @@
+{
+  "deployment_code_commit": "8bd8a0b",
+  "sessions": [
+    {
+      "session_id": "58842b4374a04699b6732c46fafba5fa",
+      "entry": "Chrome file upload",
+      "source_sha256": "25d4c1fb7aacb6ee076dfdc076ef4304a0152fb5064cd6175a4c5eb1c4460a7c",
+      "batch_id": "batch-9fa3ecb3ee457d83",
+      "selection": {
+        "offset": 0,
+        "limit": 5,
+        "total_records": 5,
+        "selected": 5
+      },
+      "samples": [
+        {
+          "trajectory_id": "s01",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 17,
+          "competition_steps": 7,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-0d532c0b170e490db7e3caa8c1e6180f",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/58842b4374a04699b6732c46fafba5fa/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-dc08030b2f8f0a5f-588e908f"
+        },
+        {
+          "trajectory_id": "p14",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 80,
+          "competition_steps": 43,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-793fea111cde41cd80293bd1b6b71663",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/58842b4374a04699b6732c46fafba5fa/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-c897054ee8dbef37-8bee2f4c"
+        },
+        {
+          "trajectory_id": "s04",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 38,
+          "competition_steps": 22,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-c893fb8dcab645b999f99bc351329558",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/58842b4374a04699b6732c46fafba5fa/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-2e32bb7782c1f620-132b0390"
+        },
+        {
+          "trajectory_id": "science_agent_bench_66",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 11,
+          "competition_steps": 6,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-2967a98713ac4068b2ea2042a9d45aa0",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/58842b4374a04699b6732c46fafba5fa/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-dadf4ccf2216303f-ece44fe1"
+        },
+        {
+          "trajectory_id": "science_agent_bench_48",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 46,
+          "competition_steps": 24,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-5e52fceb705245beb58c662845a35b1e",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/58842b4374a04699b6732c46fafba5fa/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-2f26fefaf5b7b56d-8e3f80fd"
+        }
+      ],
+      "deployment_code_commit": "ba390cb"
+    },
+    {
+      "session_id": "5739cac897a242d69ffde191b32e8c76",
+      "entry": "HTTP multipart retry after Jev ready",
+      "source_sha256": "25d4c1fb7aacb6ee076dfdc076ef4304a0152fb5064cd6175a4c5eb1c4460a7c",
+      "batch_id": "batch-9fa3ecb3ee457d83",
+      "selection": {
+        "offset": 0,
+        "limit": 5,
+        "total_records": 5,
+        "selected": 5
+      },
+      "samples": [
+        {
+          "trajectory_id": "s01",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 17,
+          "competition_steps": 7,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-7eacc266b17e47d2ae40c21f39c704c5",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/5739cac897a242d69ffde191b32e8c76/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-dc08030b2f8f0a5f-9c98eacd"
+        },
+        {
+          "trajectory_id": "p14",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 80,
+          "competition_steps": 43,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-533c4beba8074f55b5f8ccc02e0d1daf",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/5739cac897a242d69ffde191b32e8c76/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-c897054ee8dbef37-f6b7ecc1"
+        },
+        {
+          "trajectory_id": "s04",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 38,
+          "competition_steps": 22,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-5575905f434f45fa82a3d9389aff3f82",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/5739cac897a242d69ffde191b32e8c76/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-2e32bb7782c1f620-de1d3812"
+        },
+        {
+          "trajectory_id": "science_agent_bench_66",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 11,
+          "competition_steps": 6,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-7871c738b9214c08b0d0c9cce7c06a73",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/5739cac897a242d69ffde191b32e8c76/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-dadf4ccf2216303f-79873ba3"
+        },
+        {
+          "trajectory_id": "science_agent_bench_48",
+          "algorithm_ok": false,
+          "verdict": "undetermined",
+          "message_count": 46,
+          "competition_steps": 24,
+          "original_messages_equal": true,
+          "provider_input_valid": true,
+          "provider_run_id": "topic4-2a1a6e4b577e43c4b06ef5276b38cf8d",
+          "provider_status": "failed",
+          "provider_failure": {
+            "stage": "preflight",
+            "code": "required_provider_unavailable",
+            "reason": "必选上游预检未通过；未用其他模块伪造完整结果",
+            "retryable": false
+          },
+          "archive": "/data/zhangxu/review-workbench/sessions/5739cac897a242d69ffde191b32e8c76/runs/batch-9fa3ecb3ee457d83/samples/topic4-failures/run-2f26fefaf5b7b56d-e06d52de"
+        }
+      ],
+      "deployment_code_commit": "8bd8a0b"
+    }
+  ]
+}

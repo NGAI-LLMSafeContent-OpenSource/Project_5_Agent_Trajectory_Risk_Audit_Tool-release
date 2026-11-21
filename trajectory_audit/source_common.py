@@ -47,7 +47,7 @@ def parse_tool_action(action: str) -> dict[str, Any]:
 
 
 def parse_complete_action(action: str) -> tuple[str, dict[str, Any]]:
-    """解析 ATBench ``Complete{...}`` 终止声明。"""
+    """解析 ATBench ``Complete{...}`` response 包装，不推断任务状态。"""
     remainder = action[len("Complete") :].strip()
     try:
         payload = json.loads(remainder)

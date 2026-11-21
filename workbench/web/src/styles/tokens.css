@@ -1,0 +1,97 @@
+/* Design tokens, ported from prototypes/review-workbench-v2. The only place raw values may appear. */
+:root {
+  color-scheme: light;
+
+  /* color: surfaces and text */
+  --paper: #f3f5f8;
+  --white: #fff;
+  --surface-2: #fafbfd;
+  --surface-3: #f7f9fb;
+  --ink: #202b39;
+  --ink-2: #4a5768;
+  --muted: #6f7b8c;
+  --faint: #98a2b1;
+  --line: #d8dee8;
+  --line-2: #e9edf2;
+  --code: #202735;
+  --on-accent: #fff;
+
+  /* color: semantic accents */
+  --blue: #356dff;
+  --blue-soft: #eaf0ff;
+  --blue-ink: #1f4fd1;
+  --blue-line: #b9c7e6;
+  --risk: #f0445a;
+  --risk-soft: #fff0f2;
+  --risk-ink: #b42338;
+  --risk-line: #f3b0ba;
+  --amber: #e39a22;
+  --amber-soft: #fff6e6;
+  --amber-ink: #b5740b;
+  --violet: #7a5ce0;
+  --violet-soft: #f2eefe;
+  --green: #2d9b72;
+  --green-soft: #e8f6f0;
+  --focus-ring: rgba(53, 109, 255, 0.3);
+  --risk-halo: rgba(240, 68, 90, 0.14);
+  --neutral-dot: #b9c2ce;
+
+  /* typography */
+  --ui: Inter, "Segoe UI Variable", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+  --mono: "Cascadia Mono", "JetBrains Mono", Consolas, monospace;
+  --num: Bahnschrift, "DIN Alternate", var(--ui);
+  --fs-2xs: 10px;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 13px;
+  --fs-lg: 15px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
+  --lh: 1.5;
+  --lh-tight: 1.4;
+  --lh-loose: 1.75;
+
+  /* spacing */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 22px;
+  --sp-6: 32px;
+
+  /* shape and depth */
+  --radius-sm: 2px;
+  --radius-pill: 999px;
+  --border: 1px;
+  --accent-bar: 3px;
+  --ring-w: 3px;
+  --shadow-card: 0 1px 2px rgba(32, 43, 57, 0.06);
+  --shadow-pop: 0 12px 32px rgba(32, 43, 57, 0.16);
+  --shadow-drawer: -12px 0 28px rgba(32, 43, 57, 0.18);
+
+  /* layout */
+  --topbar-h: 52px;
+  --sidebar-w: 300px;
+  --sidebar-w-compact: 260px;
+  --sidebar-strip-w: 44px;
+  --dot: 8px;
+  --control-h: 32px;
+  --brand-mark: 28px;
+  --upload-card-w: 560px;
+  --stamp-w: 200px;
+  --tab-h: 46px;
+  --kpi-min-w: 150px;
+  --gutter-w: 74px;
+  --chip-col: 22ch;
+  --cot-side-w: 320px;
+  --call-seq-w: 72px;
+  --raw-min-w: 320px;
+  --raw-track: 42%;
+  --raw-ink: #d9dfe8;
+  --raw-muted: #94a0b2;
+  --raw-line: #343c4a;
+  --raw-hl: #2b3550;
+  --z-sticky: 3;
+  --z-drawer: 4;
+  --z-popover: 10;
+}

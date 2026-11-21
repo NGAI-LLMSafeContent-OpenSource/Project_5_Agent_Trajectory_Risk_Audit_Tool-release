@@ -1,0 +1,13 @@
+{
+  "name": "start_fail",
+  "provider_config": {
+    "scenario": "complete_single"
+  },
+  "input": "fixtures/topic4_provider/single_input_batch.json",
+  "force_bad_command": true,
+  "bad_command": "/nonexistent/topic4-audit-xyz",
+  "expect": {
+    "exit_code": 127,
+    "output_present": false
+  }
+}

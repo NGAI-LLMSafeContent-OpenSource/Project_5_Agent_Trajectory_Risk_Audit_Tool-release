@@ -11,6 +11,7 @@ SHA-256 与字节数在 H1 验证中会被重新计算，因此这里的记录�
 
 from __future__ import annotations
 
+import copy
 from typing import Any
 
 PINNED_DATASETS: tuple[dict[str, Any], ...] = (
@@ -100,6 +101,141 @@ ACCEPTANCE_POLICIES: dict[str, dict[str, Any]] = {
 }
 
 
+#: Development Corpus 的冻结策略。与 `acceptance-v1` 一样，分层、配额和覆盖
+#: 维度只读来源标签与来源元数据，从不读取 detected 结果；因此规则实现无法
+#: 反向影响样本选择。覆盖维度里的每个取值都是显式声明：只要某个声明值在本
+#: 地固定版本中没有任何候选记录，构建就必须失败，而不是静默生成不完整 corpus。
+DEVELOPMENT_CORPUS_POLICIES: dict[str, dict[str, Any]] = {
+    "topic4-provider-corpus-v1": {
+        "seed": 20261027,
+        "algorithm": "coverage-first-distribution-fill/1",
+        "selection_basis": "source labels and source metadata only; detected results never influence selection",
+        "isolated_from": "acceptance-v1",
+        "sources": {
+            "atbench": {
+                "quotas": {"safe": 16, "unsafe": 32},
+                "risk_layers": {
+                    "safe": {"field": "label", "true_value": 0},
+                    "unsafe": {"field": "label", "true_value": 1},
+                },
+                "distribution": {"safe": "risk_source", "unsafe": "risk_source"},
+                "coverage": [
+                    {
+                        "id": "atbench.benign",
+                        "strata": ["safe"],
+                        "kind": "field",
+                        "field": "risk_source",
+                        "values": ["benign"],
+                        "detail": "普通安全样本：来源判定为 benign，没有任何风险诱因",
+                    },
+                    {
+                        "id": "atbench.risk_inducing_safe",
+                        "strata": ["safe"],
+                        "kind": "field",
+                        "field": "risk_source",
+                        "values": [
+                            "corrupted_tool_feedback",
+                            "direct_prompt_injection",
+                            "inherent_agent_failures",
+                            "indirect_prompt_injection",
+                            "malicious_tool_execution",
+                            "malicious_user_instruction_or_jailbreak",
+                            "tool_description_injection",
+                            "unreliable_or_misinformation",
+                        ],
+                        "detail": "困难 safe 反例：存在风险诱因但来源判定仍为 safe",
+                    },
+                    {
+                        "id": "atbench.unsafe_risk_source",
+                        "strata": ["unsafe"],
+                        "kind": "field",
+                        "field": "risk_source",
+                        "values": [
+                            "corrupted_tool_feedback",
+                            "direct_prompt_injection",
+                            "inherent_agent_failures",
+                            "indirect_prompt_injection",
+                            "malicious_tool_execution",
+                            "malicious_user_instruction_or_jailbreak",
+                            "tool_description_injection",
+                            "unreliable_or_misinformation",
+                        ],
+                        "detail": "ATBench 全部 8 类风险来源",
+                    },
+                    {
+                        "id": "atbench.unsafe_failure_mode",
+                        "strata": ["unsafe"],
+                        "kind": "field",
+                        "field": "failure_mode",
+                        "values": [
+                            "choosing_malicious_tool",
+                            "failure_to_validate_tool_outputs",
+                            "flawed_planning_or_reasoning",
+                            "generation_of_harmful_offensive_content",
+                            "generation_of_malicious_executables",
+                            "incorrect_tool_parameters",
+                            "inefficient_or_wasteful_execution",
+                            "insecure_interaction_or_execution",
+                            "instruction_for_harmful_illegal_activity",
+                            "procedural_deviation_or_inaction",
+                            "provide_inaccurate_misleading_or_unverified_information",
+                            "tool_misuse_in_specific_context",
+                            "unauthorized_information_disclosure",
+                            "unconfirmed_or_over_privileged_action",
+                        ],
+                        "detail": "ATBench 全部 14 类失败模式",
+                    },
+                ],
+            },
+            "hintbench": {
+                "quotas": {"safe": 8, "risky": 24},
+                "risk_layers": {
+                    "safe": {"field": "is_risky", "true_value": False},
+                    "risky": {"field": "is_risky", "true_value": True},
+                },
+                "distribution": {"safe": "env", "risky": "primary_category"},
+                "coverage": [
+                    {
+                        "id": "hintbench.constraint",
+                        "strata": ["risky"],
+                        "kind": "categories",
+                        "values": [
+                            "Capability Constraint",
+                            "Factual Constraint",
+                            "Goal Constraint",
+                            "Procedural Constraint",
+                            "State Constraint",
+                        ],
+                        "detail": "HINTBench 五类约束；一条记录可同时覆盖多类",
+                    },
+                    {
+                        "id": "hintbench.safe_env",
+                        "strata": ["safe"],
+                        "kind": "field",
+                        "field": "env",
+                        "values": [
+                            "banking",
+                            "commerceOperations",
+                            "documentForensics",
+                            "publicTransit",
+                            "socialMediaAnalytics",
+                            "travel",
+                        ],
+                        "detail": "代表性 safe 环境",
+                    },
+                ],
+            },
+        },
+    }
+}
+
+# v2：与 v1 选样策略相同；因 ATBench Complete 投影变更需新版本冻结，禁止覆盖 v1。
+DEVELOPMENT_CORPUS_POLICIES["topic4-provider-corpus-v2"] = copy.deepcopy(
+    DEVELOPMENT_CORPUS_POLICIES["topic4-provider-corpus-v1"]
+)
+
+
+
 def pinned(dataset_id: str) -> dict[str, Any]:
     entry = BY_DATASET.get(dataset_id)
     if entry is None:
@@ -107,4 +243,10 @@ def pinned(dataset_id: str) -> dict[str, Any]:
     return entry
 
 
-__all__ = ["ACCEPTANCE_POLICIES", "BY_DATASET", "PINNED_DATASETS", "pinned"]
+__all__ = [
+    "ACCEPTANCE_POLICIES",
+    "BY_DATASET",
+    "DEVELOPMENT_CORPUS_POLICIES",
+    "PINNED_DATASETS",
+    "pinned",
+]

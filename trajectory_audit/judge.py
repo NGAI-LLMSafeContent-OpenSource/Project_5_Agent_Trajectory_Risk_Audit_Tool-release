@@ -54,7 +54,16 @@ class SemanticJudge(Protocol):
         trajectory: dict[str, Any],
         policy: Any,
         findings: list[Any],
-    ) -> JudgeResult: ...
+    ) -> JudgeResult:
+        """``trajectory`` 与 ``policy`` 都是 provider 可见的白名单投影。
+
+        ``trajectory`` 只包含 ``audit-trajectory/1`` 的 events、
+        tool_definitions 与 coverage；``policy`` 只包含
+        ``audit-policy/1`` 的授权字段，无 policy 时为 ``None``。二者都不含
+        来源标签、项目参考标注、事件 source/raw、数据集身份、policy 本地
+        来源路径或既有 Detected Finding；Judge 不得要求完整 ``trajectory/2``。
+        """
+        ...
 
 
 class NullJudge:

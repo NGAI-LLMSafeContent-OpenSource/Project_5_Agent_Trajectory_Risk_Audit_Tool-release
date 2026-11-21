@@ -1,0 +1,131 @@
+[
+  {
+    "trajectory_id": "",
+    "results": {
+      "A1": {
+        "指标": "数据统计指标可视化①：输入、输出token数",
+        "input_tokens": null,
+        "output_tokens": null
+      },
+      "A2": {
+        "指标": "数据统计指标可视化②：思考内容字符总量",
+        "known_characters": null,
+        "absent_body_step_ids": []
+      },
+      "A3": {
+        "指标": "数据统计指标可视化③：工具调用次数与种类",
+        "tool_calls": null,
+        "tool_kinds": null,
+        "tool_counts": {}
+      },
+      "B1": {
+        "指标": "思维链可视化质量①：按原始顺序展示完整思考内容",
+        "segments": [
+          {
+            "step_id": null,
+            "text": ""
+          }
+        ],
+        "absent_body_step_ids": []
+      },
+      "B2": {
+        "指标": "思维链可视化质量②：判断轨迹是否有风险",
+        "judgment": null
+      },
+      "B3": {
+        "指标": "思维链可视化质量③：首次风险行为步骤、片段和原文证据",
+        "risks": [
+          {
+            "step_id": null,
+            "risk_quote": "",
+            "evidence": [
+              {
+                "step_id": null,
+                "quote": ""
+              }
+            ]
+          }
+        ]
+      },
+      "C1": {
+        "指标": "工具调用可视化质量①：工具名称、参数及对应返回",
+        "calls": [
+          {
+            "step_id": null,
+            "tool_name": "",
+            "arguments": "",
+            "returns": [
+              {
+                "content": ""
+              }
+            ]
+          }
+        ],
+        "unmatched": []
+      },
+      "C2": {
+        "指标": "工具调用可视化质量②：识别不必要的重复调用",
+        "markers": [
+          {
+            "step_id": null,
+            "previous_step_id": null,
+            "evidence": [
+              {
+                "step_id": null,
+                "quote": ""
+              }
+            ]
+          }
+        ]
+      },
+      "C3": {
+        "指标": "工具调用可视化质量③：执行失败及错误类型",
+        "failures": [
+          {
+            "step_id": null,
+            "error_type": "",
+            "evidence": [
+              {
+                "step_id": null,
+                "quote": ""
+              }
+            ]
+          }
+        ]
+      },
+      "C4": {
+        "指标": "工具调用可视化质量④：完整性检查与会话完成状态",
+        "missing_fields": [],
+        "unmatched": [],
+        "truncations": [],
+        "completion": null
+      },
+      "C5": {
+        "指标": "工具调用可视化质量⑤：问题所在记录与原文",
+        "issues": [
+          {
+            "source_subitem": "",
+            "step_id": null,
+            "evidence": [
+              {
+                "step_id": null,
+                "quote": ""
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "trajectory_id": "aggregate",
+    "results": {
+      "A4": {
+        "指标": "数据统计指标可视化④：多条轨迹展示与工具调用汇总",
+        "trajectory_ids": [],
+        "tool_calls": null,
+        "tool_counts": {}
+      }
+    }
+  }
+]

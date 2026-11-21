@@ -1,0 +1,4 @@
+/scripts/server/deploy-review-workbench.sh text eol=lf
+/scripts/server/run-topic4-cli.sh text eol=lf
+/acceptance/saima-risk-visualization-sample-v1/raw/* -text
+/corpus/topic4-provider-corpus-v3/* -text

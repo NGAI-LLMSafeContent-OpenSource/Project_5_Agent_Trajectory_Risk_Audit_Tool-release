@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -33,7 +34,7 @@ from .errors import (
 from .model import canonical_json, sha256_json
 from .page import render_batch_page
 from .policy import Policy
-from .providers import resolve_provider
+from .providers import get_provider, resolve_provider
 from .runner import AUDIT_CONFIG_VERSION, write_run_bundle
 
 BATCH_CONFIG_VERSION = "0.2.0"
@@ -49,6 +50,7 @@ def execute_batch(
     policy: Policy | None = None,
     judge_name: str = "none",
     allow_fallback: bool = False,
+    provider_options: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """执行一个来源批次，逐样本写出 run 包并汇总失败。"""
     started_at = now()
@@ -75,9 +77,11 @@ def execute_batch(
         dataset_version=source["dataset_version"],
     )
 
-    provider, batch_degraded = resolve_provider(provider_id, allow_fallback=allow_fallback)
+    provider, batch_degraded = resolve_provider(provider_id, allow_fallback=allow_fallback, provider_options=provider_options)
     identity = provider.provider_identity()
     rules_sha256 = provider.rules_digest()
+    requested_identity = identity.to_dict()
+    requested_rules_sha256 = rules_sha256
     identity_material = {
         "adapter": {"id": spec.id, "version": spec.version},
         "dataset": {
@@ -93,6 +97,8 @@ def execute_batch(
         "batch_config_version": BATCH_CONFIG_VERSION,
         "audit_config_version": AUDIT_CONFIG_VERSION,
     }
+    if identity.id == "topic4-cli":
+        identity_material["allow_fallback"] = allow_fallback
     if policy is not None:
         identity_material["policy"] = {
             "policy_id": policy.policy_id,
@@ -215,6 +221,7 @@ def execute_batch(
                         policy=policy,
                         judge_name=judge_name,
                         allow_fallback=allow_fallback,
+                        provider_options=provider_options,
                     )
                     run_dir = Path(result["run_dir"])
                     sample_results.append(
@@ -227,6 +234,8 @@ def execute_batch(
                             "run_dir": run_dir.relative_to(batch_dir).as_posix(),
                             "verdict": result["verdict"],
                             "check_status": result["check_status"],
+                            "provider": result["provider"],
+                            "degraded": result.get("degraded"),
                             "event_count": len(trajectory.events),
                             "source_steps": len(trajectory.source_steps),
                             "source_labels": len(trajectory.source_labels),
@@ -260,6 +269,20 @@ def execute_batch(
                 )
                 record_outcomes[record_index] = False
 
+        provider_usage = dict(Counter(sample["provider"]["id"] for sample in sample_results))
+        downgraded_samples = [
+            {"sample_id": sample["sample_id"], **sample["degraded"]}
+            for sample in sample_results if sample.get("degraded")
+        ]
+        if downgraded_samples:
+            batch_degraded = {
+                "mode": "explicit_fallback", "from_provider": provider_id,
+                "samples": downgraded_samples, "retained": True,
+            }
+        if requested_identity["id"] == "topic4-cli" and set(provider_usage) == {"deterministic-baseline"}:
+            actual_provider = get_provider("deterministic-baseline")
+            identity = actual_provider.provider_identity()
+            rules_sha256 = actual_provider.rules_digest()
         status = "complete" if not failures else "partial"
         artifacts = {
             "batch": "batch.json",
@@ -288,6 +311,7 @@ def execute_batch(
             "policy": policy.summary() if policy is not None else None,
             "judge": {"name": judge_name, "influences_verdict": False},
             "degraded": batch_degraded,
+            "provider_usage": provider_usage,
             "source": source,
             "input": dict(input_record),
             "records": {
@@ -301,6 +325,9 @@ def execute_batch(
             "failures": failures,
             "artifacts": artifacts,
         }
+        if requested_identity["id"] == "topic4-cli":
+            batch["requested_provider"] = requested_identity
+            batch["requested_audit_rules_sha256"] = requested_rules_sha256
         write_json(
             batch_dir / "failures.json",
             {
@@ -348,6 +375,8 @@ def execute_batch(
         ],
         "failures": failures,
         "artifacts": artifacts,
+        "degraded": batch_degraded,
+        "provider_usage": provider_usage,
     }
 
 

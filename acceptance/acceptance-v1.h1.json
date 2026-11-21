@@ -1,0 +1,569 @@
+{
+  "schema_version": "h1-report/1",
+  "manifest_id": "acceptance-v1",
+  "manifest_content_sha256": "12209e365b740be0c78a8cb1f5822b84fa0a0b197dc3a2856272263657109aa0",
+  "generated_at": "2026-10-23T07:25:35Z",
+  "tool_version": "0.1.0",
+  "trajectory_schema_version": "trajectory/2",
+  "manifest_issues": [],
+  "sources": [
+    {
+      "dataset_id": "atbench",
+      "adapter_id": "atbench",
+      "dataset_version": "AI45Research/ATBench@4476ef92ed8f85c8d58d8a5b9dfdf55aa7893138/ATBench/test.json",
+      "license": "Apache-2.0",
+      "url": "https://huggingface.co/datasets/AI45Research/ATBench/resolve/4476ef92ed8f85c8d58d8a5b9dfdf55aa7893138/ATBench/test.json",
+      "file": {
+        "dataset_id": "atbench",
+        "path": ".cache/datasets/atbench.json",
+        "expected_sha256": "80c534b5f3517c872b528a2e6b64e34495206968edd184f4aed563d39f0cca09",
+        "expected_bytes": 18335079,
+        "url": "https://huggingface.co/datasets/AI45Research/ATBench/resolve/4476ef92ed8f85c8d58d8a5b9dfdf55aa7893138/ATBench/test.json",
+        "present": true,
+        "sha256": "80c534b5f3517c872b528a2e6b64e34495206968edd184f4aed563d39f0cca09",
+        "bytes": 18335079,
+        "ok": true
+      },
+      "records_total": 1000,
+      "records_converted": 1000,
+      "records_source_invalid": 0,
+      "records_schema_invalid": 0,
+      "records_conversion_error": 0,
+      "acceptance_samples_expected": 24,
+      "acceptance_samples_verified": 24,
+      "event_types": {
+        "message": 3065,
+        "state_change": 1520,
+        "thought": 1835,
+        "tool_call": 2972,
+        "tool_result": 2971,
+        "unsupported_content": 1
+      },
+      "events_total": 12364,
+      "schema_failures": [],
+      "conversion_failures": [],
+      "invalid_records": [],
+      "traceability_failures": [],
+      "label_failures": [],
+      "sample_failures": [],
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "dataset_id": "hintbench",
+      "adapter_id": "hintbench",
+      "dataset_version": "Jiacheng-31/HINTBench@1210cd54ebc9b0a1f3a9c4ff122705b7b3cb208b/data/hintbench.json",
+      "license": "Apache-2.0",
+      "url": "https://raw.githubusercontent.com/Jiacheng-31/HINTBench/1210cd54ebc9b0a1f3a9c4ff122705b7b3cb208b/data/hintbench.json",
+      "file": {
+        "dataset_id": "hintbench",
+        "path": ".cache/datasets/hintbench.json",
+        "expected_sha256": "87b33d3941be49cc40e6b38e1faec3cb420fd3483369eff68821e43a4db62e44",
+        "expected_bytes": 12502100,
+        "url": "https://raw.githubusercontent.com/Jiacheng-31/HINTBench/1210cd54ebc9b0a1f3a9c4ff122705b7b3cb208b/data/hintbench.json",
+        "present": true,
+        "sha256": "87b33d3941be49cc40e6b38e1faec3cb420fd3483369eff68821e43a4db62e44",
+        "bytes": 12502100,
+        "ok": true
+      },
+      "records_total": 536,
+      "records_converted": 533,
+      "records_source_invalid": 3,
+      "records_schema_invalid": 0,
+      "records_conversion_error": 0,
+      "acceptance_samples_expected": 24,
+      "acceptance_samples_verified": 24,
+      "event_types": {
+        "message": 5187,
+        "thought": 3831,
+        "tool_call": 3831,
+        "tool_result": 3800
+      },
+      "events_total": 16649,
+      "schema_failures": [],
+      "conversion_failures": [],
+      "invalid_records": [
+        {
+          "record_index": 170,
+          "sample_id": "propertyRisk_task_0009_risk_v7",
+          "stage": "source_integrity",
+          "code": "dangling_source_step_reference",
+          "path": "risk_labels[0].risk_origin_step",
+          "reason": "风险标签指向来源步骤 7，但该步骤在 trajectory 中不存在",
+          "details": {
+            "source_step_id": 7,
+            "declared_field": "risk_origin_step",
+            "known_source_step_ids": [
+              0,
+              1,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              9
+            ]
+          }
+        },
+        {
+          "record_index": 233,
+          "sample_id": "publicTransit_task_0006_risk_v6",
+          "stage": "source_integrity",
+          "code": "dangling_source_step_reference",
+          "path": "risk_labels[0].risk_origin_step",
+          "reason": "风险标签指向来源步骤 9，但该步骤在 trajectory 中不存在",
+          "details": {
+            "source_step_id": 9,
+            "declared_field": "risk_origin_step",
+            "known_source_step_ids": [
+              0,
+              1,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ]
+          }
+        },
+        {
+          "record_index": 516,
+          "sample_id": "sportsIntelligence_v11_task_0012_risk_v1",
+          "stage": "source_integrity",
+          "code": "dangling_source_step_reference",
+          "path": "risk_labels[1].step_id",
+          "reason": "风险标签指向来源步骤 13，但该步骤在 trajectory 中不存在",
+          "details": {
+            "source_step_id": 13,
+            "declared_field": "step_id",
+            "known_source_step_ids": [
+              0,
+              1,
+              10,
+              11,
+              12,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              2,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          }
+        }
+      ],
+      "traceability_failures": [],
+      "label_failures": [],
+      "sample_failures": [],
+      "failure_count": 0,
+      "failures": []
+    }
+  ],
+  "acceptance": {
+    "manifest_id": "acceptance-v1",
+    "selected": 48,
+    "verified": 48,
+    "by_dataset": {
+      "atbench": {
+        "expected": 24,
+        "verified": 24
+      },
+      "hintbench": {
+        "expected": 24,
+        "verified": 24
+      }
+    },
+    "by_stratum": [
+      {
+        "dataset_id": "atbench",
+        "stratum": "safe",
+        "count": 8
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "unsafe",
+        "count": 16
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "risky",
+        "count": 18
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "safe",
+        "count": 6
+      }
+    ],
+    "by_substratum": [
+      {
+        "dataset_id": "atbench",
+        "stratum": "safe",
+        "substratum": "benign",
+        "count": 4
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "safe",
+        "substratum": "failure_to_validate_tool_outputs",
+        "count": 1
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "safe",
+        "substratum": "incorrect_tool_parameters",
+        "count": 1
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "safe",
+        "substratum": "procedural_deviation_or_inaction",
+        "count": 1
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "safe",
+        "substratum": "provide_inaccurate_misleading_or_unverified_information",
+        "count": 1
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "unsafe",
+        "substratum": "corrupted_tool_feedback",
+        "count": 1
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "unsafe",
+        "substratum": "direct_prompt_injection",
+        "count": 1
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "unsafe",
+        "substratum": "indirect_prompt_injection",
+        "count": 3
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "unsafe",
+        "substratum": "inherent_agent_failures",
+        "count": 4
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "unsafe",
+        "substratum": "malicious_tool_execution",
+        "count": 1
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "unsafe",
+        "substratum": "malicious_user_instruction_or_jailbreak",
+        "count": 2
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "unsafe",
+        "substratum": "tool_description_injection",
+        "count": 2
+      },
+      {
+        "dataset_id": "atbench",
+        "stratum": "unsafe",
+        "substratum": "unreliable_or_misinformation",
+        "count": 2
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "risky",
+        "substratum": "Capability Constraint",
+        "count": 2
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "risky",
+        "substratum": "Factual Constraint",
+        "count": 3
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "risky",
+        "substratum": "Goal Constraint",
+        "count": 3
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "risky",
+        "substratum": "Procedural Constraint",
+        "count": 3
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "risky",
+        "substratum": "State Constraint",
+        "count": 7
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "safe",
+        "substratum": "(none)",
+        "count": 1
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "safe",
+        "substratum": "banking",
+        "count": 1
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "safe",
+        "substratum": "commerceOperations",
+        "count": 1
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "safe",
+        "substratum": "documentForensics",
+        "count": 1
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "safe",
+        "substratum": "publicHealthWarning",
+        "count": 1
+      },
+      {
+        "dataset_id": "hintbench",
+        "stratum": "safe",
+        "substratum": "publicTransit",
+        "count": 1
+      }
+    ],
+    "missing": []
+  },
+  "downstream": {
+    "modules_scanned": [
+      "trajectory_audit/baseline.py",
+      "trajectory_audit/runner.py",
+      "trajectory_audit/batch.py",
+      "trajectory_audit/metrics.py",
+      "trajectory_audit/page.py",
+      "trajectory_audit/providers.py",
+      "trajectory_audit/model.py",
+      "trajectory_audit/schema.py"
+    ],
+    "dataset_name_mentions": [],
+    "adapter_missing_methods": {},
+    "shared_adapter_interface": true,
+    "pipeline_probes": {
+      "atbench": {
+        "ok": true,
+        "sample_id": "atbench-1",
+        "payload_shape": {
+          "trajectory": [
+            "events",
+            "reference",
+            "sample",
+            "schema_version",
+            "source",
+            "source_labels",
+            "source_steps",
+            "unsupported"
+          ],
+          "metrics": [
+            "audit",
+            "availability",
+            "events",
+            "reference",
+            "run_id",
+            "sample_id",
+            "schema_version",
+            "source",
+            "tools"
+          ],
+          "audit_result": [
+            "checks",
+            "evaluated_at",
+            "findings",
+            "layer",
+            "provider",
+            "run_id",
+            "sample_id",
+            "schema_version",
+            "verdict"
+          ]
+        },
+        "verdict": "undetermined",
+        "check_status": "no_findings",
+        "finding_count": 0,
+        "metrics_tools": [
+          "calls",
+          "error_declared_results",
+          "linked_results",
+          "positionally_linked_results",
+          "results",
+          "unlinked_results",
+          "unpaired_call_event_ids"
+        ],
+        "page_bytes": 59327
+      },
+      "hintbench": {
+        "ok": true,
+        "sample_id": "commerceOperations_task_0016",
+        "payload_shape": {
+          "trajectory": [
+            "events",
+            "reference",
+            "sample",
+            "schema_version",
+            "source",
+            "source_labels",
+            "source_steps",
+            "unsupported"
+          ],
+          "metrics": [
+            "audit",
+            "availability",
+            "events",
+            "reference",
+            "run_id",
+            "sample_id",
+            "schema_version",
+            "source",
+            "tools"
+          ],
+          "audit_result": [
+            "checks",
+            "evaluated_at",
+            "findings",
+            "layer",
+            "provider",
+            "run_id",
+            "sample_id",
+            "schema_version",
+            "verdict"
+          ]
+        },
+        "verdict": "undetermined",
+        "check_status": "no_findings",
+        "finding_count": 0,
+        "metrics_tools": [
+          "calls",
+          "error_declared_results",
+          "linked_results",
+          "positionally_linked_results",
+          "results",
+          "unlinked_results",
+          "unpaired_call_event_ids"
+        ],
+        "page_bytes": 297294
+      }
+    },
+    "pipeline_shapes_consistent": true
+  },
+  "failures": [],
+  "checks": [
+    {
+      "id": "sources_pinned",
+      "title": "来源、许可、版本与 SHA-256 已固定",
+      "status": "pass",
+      "detail": "`atbench` Apache-2.0 80c534b5f351…；`hintbench` Apache-2.0 87b33d3941be…"
+    },
+    {
+      "id": "files_verified",
+      "title": "本地文件与固定清单一致",
+      "status": "pass",
+      "detail": "atbench: ok；hintbench: ok"
+    },
+    {
+      "id": "manifest_frozen",
+      "title": "冻结清单自洽且内容哈希匹配",
+      "status": "pass",
+      "detail": "无问题"
+    },
+    {
+      "id": "records_accounted",
+      "title": "每条记录都有确定去向，无静默跳过",
+      "status": "pass",
+      "detail": "atbench: 1000 = 1000 转换 + 0 来源无效；hintbench: 536 = 533 转换 + 3 来源无效"
+    },
+    {
+      "id": "zero_conversion_errors",
+      "title": "有效记录零转换错误",
+      "status": "pass",
+      "detail": "转换错误 0 条，Schema 无效 0 条"
+    },
+    {
+      "id": "exclusions_match_frozen_manifest",
+      "title": "来源无效记录与冻结清单逐条一致",
+      "status": "pass",
+      "detail": "冻结排除 3 条，不一致 0 条"
+    },
+    {
+      "id": "schema_valid",
+      "title": "全部轨迹通过 trajectory/2",
+      "status": "pass",
+      "detail": "Schema 失败 0 条记录"
+    },
+    {
+      "id": "event_traceability",
+      "title": "每个事件可回溯到原始记录位置且原文一致",
+      "status": "pass",
+      "detail": "29013 个事件，0 个问题"
+    },
+    {
+      "id": "source_label_traceability",
+      "title": "来源标签无丢失、无错位，原始标签与映射分开保存",
+      "status": "pass",
+      "detail": "0 个问题"
+    },
+    {
+      "id": "downstream_source_neutral",
+      "title": "下游不按数据集名称分支，且共用同一流水线",
+      "status": "pass",
+      "detail": "模块提及 0 处，探针 2 个"
+    },
+    {
+      "id": "acceptance_samples_complete",
+      "title": "acceptance-v1 选中的样本全部通过验证",
+      "status": "pass",
+      "detail": "48/48"
+    }
+  ],
+  "status": "pass"
+}

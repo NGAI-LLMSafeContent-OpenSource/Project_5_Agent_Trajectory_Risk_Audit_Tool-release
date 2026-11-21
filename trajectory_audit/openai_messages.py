@@ -25,10 +25,10 @@ from .model import (
 from .normalization import TrajectoryBuilder
 
 ADAPTER_ID = "openai-messages"
-ADAPTER_VERSION = __version__
+ADAPTER_VERSION = f"{__version__}+pujiang.1"
 SOURCE_FORMAT = "openai_messages"
 DESCRIPTION = "OpenAI messages 轨迹：role/content/tool_calls/tool_call_id 结构"
-SUPPORTED_TOP_LEVEL_FIELDS = {"sample_id", "messages"}
+SUPPORTED_TOP_LEVEL_FIELDS = {"sample_id", "trajectory_id", "messages", "tools"}
 KNOWN_MESSAGE_FIELDS = {
     "role",
     "content",
@@ -68,13 +68,9 @@ def validate_record(payload: Any) -> list[dict[str, str]]:
         if not isinstance(role, str) or not role.strip():
             issues.append({"path": f"{prefix}.role", "message": "role 必须是非空字符串"})
 
+        # Missing or null content is retained as a source fact; integrity review reports it.
         content = message.get("content")
-        if content is None:
-            if role != "assistant":
-                issues.append(
-                    {"path": f"{prefix}.content", "message": "该角色的 content 不能为空"}
-                )
-        elif isinstance(content, str):
+        if content is None or isinstance(content, str):
             pass
         elif isinstance(content, list):
             for part_index, part in enumerate(content):
@@ -114,14 +110,14 @@ def validate_record(payload: Any) -> list[dict[str, str]]:
 
 def sample_identity(payload: Any) -> tuple[str | None, str]:
     if isinstance(payload, dict):
-        declared = payload.get("sample_id")
+        declared = payload.get("trajectory_id", payload.get("sample_id"))
         if isinstance(declared, str) and declared.strip():
             return declared.strip(), "declared"
     return None, "derived"
 
 
 def inspect_source(payload: Any) -> list[dict[str, Any]]:
-    """OpenAI messages 没有跨消息身份引用，因此不存在来源完整性缺陷。"""
+    """Unresolved tool references are retained as events, not rejected records."""
     return []
 
 
@@ -154,6 +150,7 @@ def normalize_record(
         record_json_path=record_json_path,
         record_sha256=record_sha256,
         record_raw=payload,
+        tool_definitions=payload.get("tools"),
         unmapped_top_level_fields=sorted(set(payload) - SUPPORTED_TOP_LEVEL_FIELDS),
     )
     messages: list[dict[str, Any]] = payload["messages"]
@@ -180,12 +177,13 @@ def normalize_record(
         )
 
     for index, message in enumerate(messages):
+        first_event = len(builder.events)
         base_path = f"{record_json_path}.messages[{index}]" if record_json_path else f"messages[{index}]"
         role = str(message.get("role") or "").strip()
         actor = role or "unknown"
 
         reasoning = message.get("reasoning_content")
-        if isinstance(reasoning, str) and reasoning.strip():
+        if isinstance(reasoning, str):
             builder.emit(
                 "thought",
                 "assistant",
@@ -207,9 +205,8 @@ def normalize_record(
         texts: list[tuple[str, str]] = []
         has_content_event = False
         if isinstance(content, str):
-            if content:
-                texts.append((content, base_path))
-                has_content_event = True
+            texts.append((content, base_path))
+            has_content_event = True
         elif isinstance(content, list):
             for part_index, part in enumerate(content):
                 part_path = f"{base_path}.content[{part_index}]"
@@ -322,6 +319,14 @@ def normalize_record(
                 raw=field_value,
             )
 
+        # Internal reply scope never enters the Provider whitelist. Empty assistant
+        # placeholders also emit an event, so they close the preceding reply scope.
+        for position in range(first_event, len(builder.events)):
+            event = builder.events[position]
+            builder.events[position] = replace(
+                event, content={**event.content, "message_index": index, "message_role": role},
+            )
+
     builder.events = _resolve_tool_result_links(builder.events)
     return [builder.finalize()]
 
@@ -348,32 +353,30 @@ def normalize_openai_messages(
 
 
 def _resolve_tool_result_links(events: list[Event]) -> list[Event]:
-    """把工具返回关联到位于其之前的最近工具调用。
-
-    同一 call id 重复出现时，只有结果之前最近的一次调用有效；结果出现在调用
-    之前、或找不到对应调用时保留 ``unknown_call_id``，不猜测关联。
-    """
+    """Resolve IDs within the current assistant reply; retain ambiguity internally."""
     calls: dict[str, list[Event]] = {}
-    for event in events:
-        if event.type != "tool_call":
-            continue
-        call_id = event.content.get("call_id")
-        if isinstance(call_id, str) and call_id:
-            calls.setdefault(call_id, []).append(event)
-
+    reply_index: int | None = None
     resolved: list[Event] = []
     for event in events:
+        message_index = event.content.get("message_index")
+        if event.content.get("message_role") == "assistant" and message_index != reply_index:
+            calls = {}
+            reply_index = message_index
+        elif event.content.get("message_role") in {"system", "developer", "user"}:
+            calls = {}
+            reply_index = None
+        if event.type == "tool_call":
+            call_id = event.content.get("call_id")
+            if isinstance(call_id, str) and call_id:
+                calls.setdefault(call_id, []).append(event)
         if event.type != "tool_result":
             resolved.append(event)
             continue
         call_id = event.content.get("call_id")
         call_event_id: str | None = None
-        if isinstance(call_id, str) and call_id:
-            preceding = [
-                call for call in calls.get(call_id, []) if call.sequence < event.sequence
-            ]
-            if preceding:
-                call_event_id = preceding[-1].event_id
+        candidates = calls.get(call_id, []) if isinstance(call_id, str) else []
+        if len(candidates) == 1:
+            call_event_id = candidates[0].event_id
         link_status = (
             LINK_STATUS_LINKED
             if call_event_id
@@ -388,6 +391,12 @@ def _resolve_tool_result_links(events: list[Event]) -> list[Event]:
                     **event.content,
                     "call_event_id": call_event_id,
                     "link_status": link_status,
+                    "candidate_call_event_ids": [call.event_id for call in candidates],
+                    "unresolved_reason": (
+                        "ambiguous_reply_call_id" if len(candidates) > 1
+                        else "no_call_id" if not call_id
+                        else "no_call_in_reply" if not candidates else None
+                    ),
                 },
             )
         )

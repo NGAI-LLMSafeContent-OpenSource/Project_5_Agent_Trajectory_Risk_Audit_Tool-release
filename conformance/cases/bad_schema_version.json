@@ -1,0 +1,12 @@
+{
+  "name": "bad_schema_version",
+  "provider_config": {
+    "scenario": "bad_schema_version"
+  },
+  "input": "fixtures/topic4_provider/single_input_batch.json",
+  "expect": {
+    "exit_code": 0,
+    "json_object": true,
+    "status": "complete"
+  }
+}

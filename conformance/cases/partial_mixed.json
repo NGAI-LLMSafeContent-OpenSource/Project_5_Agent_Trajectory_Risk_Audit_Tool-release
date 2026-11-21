@@ -1,0 +1,13 @@
+{
+  "name": "partial_mixed",
+  "provider_config": {
+    "scenario": "partial_mixed"
+  },
+  "input": "fixtures/topic4_provider/minimal_input_batch.json",
+  "expect": {
+    "exit_code": 0,
+    "output_present": true,
+    "json_object": true,
+    "status": "partial"
+  }
+}

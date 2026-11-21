@@ -34,6 +34,7 @@ from .errors import (
 from .model import AuditResult, NormalizedTrajectory, canonical_json, sha256_json
 from .providers import get_provider
 from .schema import TRAJECTORY_SCHEMA_VERSION, locate_json_path, validate_trajectory
+from .selection import allocate_counts, matches_layer
 
 MANIFEST_SCHEMA = "acceptance-manifest/1"
 H1_REPORT_SCHEMA = "h1-report/1"
@@ -1282,15 +1283,6 @@ def _policy(manifest_id: str) -> dict[str, Any]:
     }
 
 
-def _matches_layer(record: Any, layer: dict[str, Any]) -> bool:
-    """按严格类型比较风险层，避免 ``False == 0`` 之类的隐式相等。"""
-    if not isinstance(record, dict):
-        return False
-    value = record.get(layer["field"])
-    expected = layer.get("true_value")
-    return type(value) is type(expected) and value == expected
-
-
 def _stratify(
     valid: Iterable[tuple[int, Any, str]], spec: dict[str, dict[str, Any]]
 ) -> dict[str, dict[str, list[tuple[int, Any, str, str]]]]:
@@ -1300,7 +1292,7 @@ def _stratify(
     for record_index, record, sample_id in valid:
         matched = None
         for stratum, stratum_spec in spec.items():
-            if _matches_layer(record, stratum_spec["layer"]):
+            if matches_layer(record, stratum_spec["layer"]):
                 matched = stratum
                 substratum = _substratum(record, stratum_spec)
                 groups[stratum].setdefault(substratum, []).append(
@@ -1369,7 +1361,9 @@ def _select(
                     "available": available,
                 },
             )
-        allocation = _allocate(substrata, expected)
+        allocation = allocate_counts(
+            {key: len(items) for key, items in substrata.items()}, expected
+        )
         for substratum, count in sorted(allocation.items()):
             candidates = sorted(substrata[substratum], key=lambda item: item[0])
             rng = random.Random(f"{seed}:{dataset_id}:{stratum}:{substratum}")
@@ -1379,25 +1373,6 @@ def _select(
                 for record_index, record, sample_id, _ in picked
             )
     return chosen
-
-
-def _allocate(groups: dict[str, list[Any]], quota: int) -> dict[str, int]:
-    """最大余数法分配配额，保证总数恰好等于配额且每层不超过候选数。"""
-    total = sum(len(items) for items in groups.values())
-    if total == 0 or quota <= 0:
-        return {}
-    base: dict[str, int] = {}
-    fractions: list[tuple[float, int, str]] = []
-    for key, items in groups.items():
-        exact = quota * len(items) / total
-        floor = int(exact)
-        base[key] = floor
-        fractions.append((exact - floor, len(items), key))
-    remaining = quota - sum(base.values())
-    fractions.sort(key=lambda item: (-item[0], -item[1], item[2]))
-    for _, _, key in fractions[:remaining]:
-        base[key] += 1
-    return {key: count for key, count in base.items() if count > 0}
 
 
 def _source_label_summary(

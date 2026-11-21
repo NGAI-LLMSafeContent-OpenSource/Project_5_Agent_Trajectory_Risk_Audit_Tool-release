@@ -286,30 +286,22 @@ def _agent_events(
     action = turn.get("action")
     if isinstance(action, str) and action.strip():
         if action.startswith("Complete"):
-            text, declaration = parse_complete_action(action)
+            text, _ = parse_complete_action(action)
             if text:
                 events.append(
                     builder.emit(
                         "message",
                         "assistant",
-                        {"role": "agent", "text": text, "parts": [{"type": "text", "text": text}]},
+                        {
+                            "role": "agent",
+                            "text": text,
+                            "parts": [{"type": "text", "text": text}],
+                            "source_action_type": "Complete",
+                        },
                         json_path=f"{turn_path}.action",
                         raw=action,
                     )
                 )
-            events.append(
-                builder.emit(
-                    "state_change",
-                    "assistant",
-                    {
-                        "state": "declared_complete",
-                        "basis": "source_action",
-                        "declaration": declaration,
-                    },
-                    json_path=f"{turn_path}.action",
-                    raw=action,
-                )
-            )
         elif action.lstrip().startswith("{"):
             tool_content = parse_tool_action(action)
             events.append(

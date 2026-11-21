@@ -1,0 +1,66 @@
+/* Batch view only: use the existing workbench tokens and leave sample review unchanged. */
+.batch-heading { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-5); }
+.batch-heading h1 { margin: 0; font-size: var(--fs-2xl); font-weight: 650; }
+.batch-heading .btn { font-size: var(--fs-sm); }
+.batch-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: var(--sp-5); background: var(--white); border: var(--border) solid var(--line); border-radius: var(--radius-sm); }
+.batch-metrics > div { padding: var(--sp-4) var(--sp-5); border-right: var(--border) solid var(--line-2); }
+.batch-metrics > div:last-child { border-right: 0; }
+.batch-metrics > div > span { font-size: var(--fs-sm); color: var(--ink-2); }
+.batch-metrics strong { display: block; font: 500 calc(var(--fs-2xl) + var(--sp-2)) / var(--lh) var(--num); }
+.batch-metrics strong small { margin-left: var(--sp-2); color: var(--muted); font: var(--fs-xs) var(--ui); }
+.batch-verdict-counts { display: flex; flex-wrap: wrap; gap: var(--sp-4); }
+.batch-verdict-counts b { display: block; font: 500 var(--fs-2xl) / var(--lh) var(--num); }
+.batch-verdict-counts small { display: block; font-size: var(--fs-2xs); color: var(--muted); }
+.batch-verdict-counts .unsafe b { color: var(--risk-ink); }
+.batch-verdict-counts .safe b { color: var(--green); }
+.batch-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); align-items: start; }
+.batch-table-card, .batch-tools-card { min-width: 0; border: var(--border) solid var(--line); border-radius: var(--radius-sm); background: var(--white); }
+.batch-section-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-4); }
+.batch-section-heading h2 { margin: 0; font-size: var(--fs-lg); font-weight: 650; }
+.batch-section-heading > span { font-size: var(--fs-2xs); color: var(--muted); }
+.batch-filters { display: flex; flex-wrap: wrap; gap: var(--sp-1); padding: 0 var(--sp-4) var(--sp-3); }
+.batch-filters button { min-height: var(--control-h); padding: var(--sp-1) var(--sp-2); border: var(--border) solid transparent; border-radius: var(--radius-sm); background: transparent; font-size: var(--fs-xs); color: var(--ink-2); }
+.batch-filters button span { margin-left: var(--sp-2); font-family: var(--num); }
+.batch-filters button[aria-pressed="true"], .batch-filters .batch-tool-filter { color: var(--blue-ink); background: var(--blue-soft); }
+.batch-filters button:hover { border-color: var(--blue-line); }
+.batch-table-scroll { overflow: auto; }
+.batch-table-scroll table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+.batch-table-scroll thead th { padding: var(--sp-3); border-block: var(--border) solid var(--line-2); background: var(--surface-2); font-size: var(--fs-2xs); color: var(--ink-2); font-weight: 400; }
+.batch-table-scroll td, .batch-table-scroll th[scope="row"] { padding: var(--sp-4) var(--sp-3); border-bottom: var(--border) solid var(--line-2); font: var(--fs-sm) / var(--lh) var(--num); }
+.batch-table-scroll th:first-child { padding-left: var(--sp-4); }
+.batch-table-scroll tbody tr:hover { background: var(--surface-2); }
+.batch-sample { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); min-height: var(--control-h); padding: 0; border: 0; background: none; text-align: left; font: var(--fs-xs) var(--mono); }
+.batch-sample span, .batch-sample:hover { color: var(--blue-ink); }
+.batch-verdict { display: inline-block; padding: var(--sp-1) var(--sp-2); border-radius: var(--radius-sm); font: var(--fs-2xs) var(--ui); color: var(--ink-2); background: var(--surface-3); }
+.batch-verdict.unsafe { background: var(--risk-soft); color: var(--risk-ink); }
+.batch-verdict.safe { background: var(--green-soft); color: var(--ink); }
+.batch-unavailable { color: var(--muted); font: var(--fs-xs) var(--ui); }
+.batch-thinking-note { display: block; color: var(--muted); font: var(--fs-2xs) / var(--lh-loose) var(--ui); }
+.batch-slash { color: var(--muted); }
+.batch-table-note { margin: 0; padding: var(--sp-3) var(--sp-4); font-size: var(--fs-2xs); color: var(--muted); }
+.batch-help { margin: 0; padding: 0 var(--sp-4) var(--sp-3); font-size: var(--fs-2xs); color: var(--muted); }
+.batch-tool-bars { list-style: none; margin: 0; padding: 0 var(--sp-4) var(--sp-4); }
+.batch-tool-bars button { display: grid; width: 100%; grid-template-columns: minmax(8rem, 14rem) minmax(0, 1fr) 4rem; grid-template-areas: "name bar count"; align-items: center; gap: var(--sp-4); min-height: var(--control-h); padding: var(--sp-2); border: 0; border-radius: var(--radius-sm); background: none; text-align: left; }
+.batch-tool-name { grid-area: name; font: var(--fs-xs) var(--mono); overflow-wrap: anywhere; }
+.batch-tool-bars b { grid-area: count; font: var(--fs-sm) var(--num); font-variant-numeric: tabular-nums; text-align: right; }
+.batch-bar { grid-area: bar; height: var(--sp-2); border-radius: var(--radius-sm); overflow: hidden; background: var(--surface-3); }
+.batch-bar i { display: block; height: 100%; background: var(--blue-line); border-radius: var(--radius-sm); }
+.batch-tool-bars li:first-child .batch-bar i { background: var(--blue); }
+.batch-tool-bars button:hover, .batch-tool-bars button[aria-pressed="true"] { color: var(--blue-ink); background: var(--blue-soft); }
+.batch-empty { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-4); color: var(--muted); font-size: var(--fs-sm); }
+
+@media (max-width: 1440px) {
+  .batch-metrics > div { padding: var(--sp-4); }
+}
+@media (max-width: 950px) {
+  .batch-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .batch-metrics > div:nth-child(-n+2) { border-bottom: var(--border) solid var(--line-2); }
+  .batch-metrics > div:nth-child(even) { border-right: 0; }
+  .batch-heading, .batch-section-heading { flex-wrap: wrap; }
+}
+@media (max-width: 600px) {
+  .batch-tool-bars button { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name count" "bar bar"; gap: var(--sp-2); }
+  .batch-verdict-counts { gap: var(--sp-2); }
+  .batch-metrics > div { padding: var(--sp-3); }
+  .batch-empty { align-items: flex-start; flex-direction: column; }
+}

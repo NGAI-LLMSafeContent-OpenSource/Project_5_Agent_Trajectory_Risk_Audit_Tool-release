@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -19,7 +20,7 @@ from .metrics import compute_metrics
 from .model import AuditResult, NormalizedTrajectory, canonical_json, sha256_json
 from .page import render_review_page
 from .policy import Policy
-from .providers import resolve_provider
+from .providers import get_provider, resolve_provider
 
 AUDIT_CONFIG_VERSION = "0.2.0"
 
@@ -33,6 +34,7 @@ def execute_run(
     policy: Policy | None = None,
     judge_name: str = "none",
     allow_fallback: bool = False,
+    provider_options: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """执行一次单条轨迹审计运行并写出完整 run 包。"""
     started_at = now()
@@ -98,6 +100,7 @@ def execute_run(
         policy=policy,
         judge_name=judge_name,
         allow_fallback=allow_fallback,
+        provider_options=provider_options,
     )
 
 
@@ -117,11 +120,14 @@ def write_run_bundle(
     policy: Policy | None = None,
     judge_name: str = "none",
     allow_fallback: bool = False,
+    provider_options: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """把一条归一轨迹写成不可变 run 包；单条与批量共用。"""
-    provider, degraded = resolve_provider(provider_id, allow_fallback=allow_fallback)
+    provider, degraded = resolve_provider(provider_id, allow_fallback=allow_fallback, provider_options=provider_options)
     identity = provider.provider_identity()
     rules_sha256 = provider.rules_digest()
+    requested_identity = identity.to_dict()
+    requested_rules_sha256 = rules_sha256
     identity_material = {
         "sample_id": trajectory.sample_id,
         "input_sha256": trajectory.input_sha256,
@@ -141,6 +147,8 @@ def write_run_bundle(
         },
         "audit_config_version": AUDIT_CONFIG_VERSION,
     }
+    if identity.id == "topic4-cli":
+        identity_material["allow_fallback"] = allow_fallback
     if policy is not None:
         identity_material["policy"] = {
             "policy_id": policy.policy_id,
@@ -166,12 +174,21 @@ def write_run_bundle(
     )
 
     try:
+        artifact_options = {}
+        if identity.id == "topic4-cli":
+            artifact_options = {"archive_dir": run_dir / "topic4", "allow_fallback": allow_fallback}
         provider_output = provider.audit(
             trajectory,
             policy=policy,
             judge_name=judge_name,
             degraded=degraded,
+            **artifact_options,
         )
+        degraded = provider_output.degraded
+        if degraded is not None and identity.id == "topic4-cli":
+            actual_provider = get_provider(degraded["to_provider"])
+            identity = actual_provider.provider_identity()
+            rules_sha256 = actual_provider.rules_digest()
         audit_result = AuditResult(
             sample_id=trajectory.sample_id,
             run_id=run_id,
@@ -184,6 +201,7 @@ def write_run_bundle(
             policy=provider_output.policy,
             judge=provider_output.judge,
             degraded=provider_output.degraded,
+            provider_result=provider_output.provider_result,
         )
         metrics = compute_metrics(trajectory, audit_result)
         trajectory_dict = trajectory.to_dict()
@@ -201,6 +219,8 @@ def write_run_bundle(
         }
         if policy is not None:
             artifacts["policy"] = "policy.json"
+        if artifact_options:
+            artifacts["topic4_archive"] = "topic4/manifest.json"
         input_record = {
             "original_path": input_original_path,
             "stored_path": stored_path,
@@ -272,6 +292,9 @@ def write_run_bundle(
         }
         if batch_context is not None:
             run["batch"] = dict(batch_context)
+        if artifact_options:
+            run["requested_provider"] = requested_identity
+            run["requested_audit_rules_sha256"] = requested_rules_sha256
 
         (run_dir / "input").mkdir()
         (run_dir / stored_path).write_bytes(input_bytes)
@@ -294,6 +317,22 @@ def write_run_bundle(
         )
         # run.json 最后写入：它存在且 status=complete 才表示本次 run 已完成。
         write_json(run_dir / "run.json", run)
+    except RunError as exc:
+        archive = run_dir / "topic4"
+        if archive.is_dir():
+            retained = out_root / "topic4-failures" / f"{run_id}-{uuid.uuid4().hex[:8]}"
+            retained.parent.mkdir(parents=True, exist_ok=True)
+            archive.rename(retained)
+            manifest_path = retained / "manifest.json"
+            if manifest_path.is_file():
+                manifest = read_json(manifest_path)
+                for key in ("input", "raw_output"):
+                    if manifest.get(key):
+                        manifest[key] = str(retained / Path(manifest[key]).name)
+                write_json(manifest_path, manifest)
+            exc.details["archive_dir"] = str(retained)
+        remove_tree(run_dir)
+        raise
     except BaseException:
         remove_tree(run_dir)
         raise
@@ -321,6 +360,7 @@ def write_run_bundle(
             "record_sha256": trajectory.record_sha256,
         },
         "artifacts": artifacts,
+        **({"degraded": degraded} if artifact_options else {}),
     }
 
 

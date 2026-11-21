@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """审计 provider 注册表与显式 fallback 策略。
 
-正式 provider 尚未接入；当前只有显式选择的最小确定性 baseline。
+支持确定性 baseline 和通过外部 CLI 调用的课题四 Provider。
 
 失败处理是 fail-closed 的：请求的 provider 不存在时默认直接失败，保留原始
 失败；只有调用方显式允许 fallback，才会运行 baseline，并在结果中写入
@@ -15,8 +15,9 @@ from typing import Any
 
 from . import baseline
 from .errors import RunError
+from .topic4_provider import run_provider
 
-PROVIDERS: dict[str, ModuleType] = {baseline.PROVIDER_ID: baseline}
+PROVIDERS: dict[str, ModuleType] = {baseline.PROVIDER_ID: baseline, run_provider.PROVIDER_ID: run_provider}
 
 #: 显式 fallback 时使用的 provider。只允许显式开关，不允许自动降级。
 FALLBACK_PROVIDER_ID = baseline.PROVIDER_ID
@@ -36,8 +37,9 @@ def get_provider(provider_id: str) -> ModuleType:
 
 
 def resolve_provider(
-    provider_id: str, *, allow_fallback: bool = False
-) -> tuple[ModuleType, dict[str, Any] | None]:
+    provider_id: str, *, allow_fallback: bool = False,
+    provider_options: dict[str, Any] | None = None,
+) -> tuple[Any, dict[str, Any] | None]:
     """解析 provider，返回 ``(provider, degraded)``。
 
     ``degraded`` 非空表示本次运行是显式 fallback，调用方必须把它原样写入
@@ -46,6 +48,8 @@ def resolve_provider(
 
     provider = PROVIDERS.get(provider_id)
     if provider is not None:
+        if provider_id == run_provider.PROVIDER_ID:
+            return run_provider.create_provider(provider_options), None
         return provider, None
     if not allow_fallback:
         raise RunError(

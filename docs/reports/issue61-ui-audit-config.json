@@ -1,0 +1,6 @@
+{
+  "sourceRoots": ["workbench/web/src"],
+  "ownership": {
+    "Select/Listbox": "native"
+  }
+}
