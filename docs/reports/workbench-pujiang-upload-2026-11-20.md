@@ -6,7 +6,7 @@
 
 - 实现提交：`c7e5b50`；严格 JSONL 校验修复：`ba390cb`。
 - 176 部署代码提交：`a551996`。先前 `8bd8a0b` 曾用 Git bundle 快进并执行部署脚本 `--no-pull`；本轮在服务器 `git pull --ff-only` 后执行 `bash scripts/server/deploy-review-workbench.sh`。
-- 地址：<http://10.184.17.176:5861/>。健康检查：`provider.profile=finial-1.0`、`overrides_allowed=false`。
+- 地址：<http://platform.example.invalid:5861/>。健康检查：`provider.profile=finial-1.0`、`overrides_allowed=false`。
 - 初始上传和再次上传复用 UploadPanel。OpenAI Messages（浦江）是默认首项，页面不提供范围控件，不传 limit/offset 即完整文件。ATBench / HINTBench 仍可填写处理条数和跳过条数。接口显式选择只要求正整数，不再把条数限制在 20。上传入口和顶栏「上传轨迹」都不再提供 Fixture 按钮。
 - 切片前校验整个文件，拒绝重复身份、非法编码、非法 JSONL、空白行和无效消息。额外拒绝 Python JSON 默认接受的 NaN/Infinity/-Infinity。
 - 保留上传原始字节、规范事件和完整消息；算法失败仍可查询与审阅。失败 Review Bundle 判定为 undetermined，检测发现与算法指标未提供，不把空列表展示成已检查无发现。
@@ -65,14 +65,14 @@ npm run build
 | science_agent_bench_66 | 11 | 6 | failure / failure |
 | science_agent_bench_48 | 46 | 24 | failure / failure |
 
-复测入口：[首次浏览器上传会话](http://10.184.17.176:5861/?session_id=58842b4374a04699b6732c46fafba5fa&sample_id=s01)、[Jev ready 后复测会话](http://10.184.17.176:5861/?session_id=5739cac897a242d69ffde191b32e8c76&sample_id=science_agent_bench_66)。
+复测入口：[首次浏览器上传会话](http://platform.example.invalid:5861/?session_id=58842b4374a04699b6732c46fafba5fa&sample_id=s01)、[Jev ready 后复测会话](http://platform.example.invalid:5861/?session_id=5739cac897a242d69ffde191b32e8c76&sample_id=science_agent_bench_66)。
 
 再次复现（不要把内部 mapping 或参考答案作为上传输入）：
 
 ```bash
 curl -fsS --max-time 21600 -F adapter=openai-messages \
   -F trajectory=@acceptance/saima-risk-visualization-sample-v1/raw/samples.jsonl \
-  http://10.184.17.176:5861/api/audit-sessions -o session.json
+  http://platform.example.invalid:5861/api/audit-sessions -o session.json
 ```
 
 返回 `ok=true` 表示会话已建立；必须逐条核对 `samples[].ok` 才能报告算法运行成功。

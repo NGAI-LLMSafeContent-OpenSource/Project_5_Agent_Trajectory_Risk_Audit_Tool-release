@@ -2,11 +2,9 @@
 
 原仓：`NGAI-LLMSafeContent/Project_5_Agent_Trajectory_Risk_Audit_Tool`；源提交：`8bc943ba697f4c613540c6b0644e7467cb3a767e`；分支：`release/1.0`。
 
-本清单逐文件列出发布内容。原有非README实现/配置/资源保持Git对象字节和模式一致；README与发布新增材料单独登记。RELEASE_MANIFEST.json和SHA256SUMS由发布器生成，不形成自引用哈希。
+2026-11-27：按发布方授权将部署环境内网地址替换为保留示例域名。端口、接口路径和业务算法保持不变；配套测试同步替换。原始地址不在本清单中重复展示。
 
 ## 来自原仓、原样保留的文件
-
-- `acceptance/saima-risk-visualization-sample-v1/raw/submission_template.json`
 
 - `.env.example`
 - `.gitattributes`
@@ -19,6 +17,7 @@
 - `SECURITY.md`
 - `acceptance/acceptance-v1.h1.json`
 - `acceptance/acceptance-v1.json`
+- `acceptance/saima-risk-visualization-sample-v1/raw/submission_template.json`
 - `batch_inputs/task_list.jsonl`
 - `benchmark/__init__.py`
 - `benchmark/benchmark.py`
@@ -92,7 +91,6 @@
 - `docs/reports/issue61-real-provider-sessions.json`
 - `docs/reports/issue61-ui-audit-config.json`
 - `docs/reports/issue61-ui-audit.json`
-- `docs/reports/issue63-race-items-audit.md`
 - `docs/reports/issue63/01-stats-s01.jpg`
 - `docs/reports/issue63/02-cot-48-step18-expanded.jpg`
 - `docs/reports/issue63/03-tools-48-c5-jump-messages29.jpg`
@@ -102,9 +100,7 @@
 - `docs/reports/topic4-provider-corpus-v1-development-digests.json`
 - `docs/reports/topic4-provider-corpus-v2-development-digests.json`
 - `docs/reports/topic4-provider-v1-integration-gap.md`
-- `docs/reports/topic4-saima-five-real-cli-2026-11-19.md`
 - `docs/reports/topic4-toolchain-integrated-environment-research.md`
-- `docs/reports/workbench-pujiang-upload-2026-11-20.md`
 - `docs/research/agent-evaluation-sources.md`
 - `docs/research/atbench-paper-analysis.md`
 - `docs/research/atbench-pujiang-authors.md`
@@ -118,8 +114,6 @@
 - `docs/topic4-cot-annotation-fields-draft.md`
 - `docs/topic4-provider-v1-meeting-draft.md`
 - `docs/topic4-provider-v1-meeting-todos.md`
-- `docs/topic4-toolchain-176-acceptance.md`
-- `docs/trajectory-audit-bad-case-workflow.md`
 - `docs/trajectory-audit.md`
 - `docs/trajectory-review-12-bilingual.md`
 - `docs/workbench-kanban.md`
@@ -153,8 +147,6 @@
 - `scripts/multi_judge.py`
 - `scripts/prepare_topic4_real_debug.py`
 - `scripts/run_topic4_real_debug.sh`
-- `scripts/server/deploy-review-workbench-prototype.sh`
-- `scripts/server/deploy-review-workbench.sh`
 - `scripts/server/run-topic4-cli.sh`
 - `scripts/transcript_normalizer.py`
 - `tasks/openclaw/task_pasb_incident_response_chain_23adc778/fixture/init.sh`
@@ -2460,7 +2452,6 @@
 - `trajectory_audit/topic4_provider/validator.py`
 - `trajectory_audit/verdict_score.py`
 - `uv.lock`
-- `workbench/README.md`
 - `workbench/__init__.py`
 - `workbench/api/__init__.py`
 - `workbench/api/app.py`
@@ -2521,9 +2512,20 @@
 - `workbench/web/src/vite-env.d.ts`
 - `workbench/web/tsconfig.json`
 - `workbench/web/vite.config.ts`
+
+## 经授权仅替换地址的原有文件
+
+- `docs/reports/issue63-race-items-audit.md`
+- `docs/reports/topic4-saima-five-real-cli-2026-11-19.md`
+- `docs/reports/workbench-pujiang-upload-2026-11-20.md`
+- `docs/topic4-toolchain-176-acceptance.md`
+- `docs/trajectory-audit-bad-case-workflow.md`
+- `scripts/server/deploy-review-workbench-prototype.sh`
+- `scripts/server/deploy-review-workbench.sh`
+- `workbench/README.md`
 - `workbench/web/vite.summary-prototype.config.ts`
 
-## README及发布新增材料
+## 发布说明与验证支持文件
 
 - `KNOWN_ISSUES.md`
 - `README.md`
@@ -2537,12 +2539,9 @@
 - `third_party/ATBench-LICENSE`
 - `third_party/HINTBench-LICENSE`
 - `tools/release_check.py`
+- `tools/release_redaction_check.py`
 
-## 生成的校验文件
+## 自动生成的完整性文件
 
 - `RELEASE_MANIFEST.json`
 - `SHA256SUMS`
-
-## 排除范围
-
-明确弃用的历史原型、旧版本快照、缓存、数据库、用户配置和预跑产物未发布。模型、原始数据/知识库和外部服务按README准备，不以缩减/改写同路径数据文件冒充完整交付。源码原有错误保留，见KNOWN_ISSUES.md。

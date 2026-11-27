@@ -2,12 +2,12 @@
   "checks": {
     "commands": [
       [
-        "/data/fzk/env/release-alignment-20261121/agent/bin/python",
-        "-B",
-        "tools/release_check.py"
+        "python3",
+        "tools/release_redaction_check.py"
       ]
     ],
-    "passed": true
+    "passed": true,
+    "scope": "Address-redaction update: complete inventory/hash/mode/provenance checks and targeted syntax/configuration tests. Not a new full real-model acceptance."
   },
   "files": {
     ".env.example": {
@@ -44,7 +44,7 @@
     },
     "README.md": {
       "mode": "100644",
-      "sha256": "b4813e9a86fd2840aaa2b6917a9d257e410f3f7544c927f467f4b48fd8debba8"
+      "sha256": "b28aba7e09f2c4330c79eb45bd840f7316e42ca9ef690c435d680cc2dab544b1"
     },
     "README_CN.md": {
       "mode": "100644",
@@ -52,7 +52,7 @@
     },
     "RELEASE_FILES.md": {
       "mode": "100644",
-      "sha256": "f08335ef0e66530f0ad045c855ce7167426d0983e6144f5c8bf8f016de02ff17"
+      "sha256": "75a4272f5ff2e08928c5be5e4cc954951184b533f8af04b5d1037959f166c6d3"
     },
     "SECURITY.md": {
       "mode": "100644",
@@ -60,7 +60,7 @@
     },
     "SOURCE_ALIGNMENT.json": {
       "mode": "100644",
-      "sha256": "5a58d28bebf852b808a09287d00382a5a00b8fc9c6194efb516dec28f8451af4"
+      "sha256": "056ce18bce93bcb1228bda518b064e5fec28460621cf292fa85ca6dfd57ed68e"
     },
     "THIRD_PARTY_NOTICES.md": {
       "mode": "100644",
@@ -380,7 +380,7 @@
     },
     "docs/reports/issue63-race-items-audit.md": {
       "mode": "100644",
-      "sha256": "42c905ce9d44a3f0f8d2f9f6c89903892b782e3333c8a53eef50816553202d2f"
+      "sha256": "2c4bc5900d8f644556dea9bf7a3e4e48abf5e08a065ea5aa36c5f956a80ac59c"
     },
     "docs/reports/issue63/01-stats-s01.jpg": {
       "mode": "100644",
@@ -420,7 +420,7 @@
     },
     "docs/reports/topic4-saima-five-real-cli-2026-11-19.md": {
       "mode": "100644",
-      "sha256": "050aaba3904f2402e0be73cb58f03c4e46c90215354361fe6a6d3b249c3e2206"
+      "sha256": "dfda9be4688e44cc52e3384bcdda70c1cc5095a3352ac351ec58f7a25c1ea9c6"
     },
     "docs/reports/topic4-toolchain-integrated-environment-research.md": {
       "mode": "100644",
@@ -428,7 +428,7 @@
     },
     "docs/reports/workbench-pujiang-upload-2026-11-20.md": {
       "mode": "100644",
-      "sha256": "6ce34b6cb436cee1f6d2b10d130dcbda4792d1a2b8a5bd2fda0ceb4653e13b93"
+      "sha256": "9aedca8059b64452243a7116c65ddc0159be5e938b8cff78ceba58b2a5c32569"
     },
     "docs/research/agent-evaluation-sources.md": {
       "mode": "100644",
@@ -484,11 +484,11 @@
     },
     "docs/topic4-toolchain-176-acceptance.md": {
       "mode": "100644",
-      "sha256": "409cd04e629bfaed770e8086a82e14a58f92ff4f2db1ca0017ec7873664a3c14"
+      "sha256": "b0f84a493408d7360c8663f7b4573e9c15724a0fb4ab77120d4eabe54edbe642"
     },
     "docs/trajectory-audit-bad-case-workflow.md": {
       "mode": "100644",
-      "sha256": "00ee6d725cc6b7288a19eedd988310f7d1616bafa4028c91adf1c8df66adebea"
+      "sha256": "4d7d3ac1b02844dc344af1cab07ac8db83205a8228c8ef1cbb5cc6cca3b782bd"
     },
     "docs/trajectory-audit.md": {
       "mode": "100644",
@@ -632,11 +632,11 @@
     },
     "scripts/server/deploy-review-workbench-prototype.sh": {
       "mode": "100644",
-      "sha256": "c2c76c81b96373d1ed990d0db3686bffe208c6580f2efbd5f11bfc83c7301526"
+      "sha256": "15f39ad5a3d847c6e07a632764669ec61f1b7973ee7412255f2747da1aa2bc3a"
     },
     "scripts/server/deploy-review-workbench.sh": {
       "mode": "100644",
-      "sha256": "fffdfdd38521a8792d201111d545f98e26e5940fdb63cd20d3a6e754b5ca9419"
+      "sha256": "c3cdbe9ca3c6db2748c8bf8233f8e6b3c8619638f210851fd144d54c5b9970cd"
     },
     "scripts/server/run-topic4-cli.sh": {
       "mode": "100755",
@@ -9652,7 +9652,11 @@
     },
     "tools/release_check.py": {
       "mode": "100644",
-      "sha256": "e6b38095cd478690cf2c78de557974ddf4f14a405d09b3a6521ac82e739bad12"
+      "sha256": "bc5e803a93f5456c4ba242a90b7d4b5fb40c56a666ba899277298b104d3d908b"
+    },
+    "tools/release_redaction_check.py": {
+      "mode": "100644",
+      "sha256": "239c41ab1f1b0cd0d0029b51177b07f577fdb804eedef040fa1854d8b2b768a6"
     },
     "trajectory_audit/__init__.py": {
       "mode": "100644",
@@ -9872,7 +9876,7 @@
     },
     "workbench/README.md": {
       "mode": "100644",
-      "sha256": "1c3f9d65ec7e6e216d42dfe7b5c7d3831aadf860dea6a526a9df2e5a8a2bcd67"
+      "sha256": "4d76ed0673d3f40146ed41801d22c8da6a9a8a18381409d09c25d7688f228bdb"
     },
     "workbench/__init__.py": {
       "mode": "100644",
@@ -10116,11 +10120,28 @@
     },
     "workbench/web/vite.summary-prototype.config.ts": {
       "mode": "100644",
-      "sha256": "3143498b97556d717d55658ca63d84ea897013d93c510db96b7f46b87f6bd843"
+      "sha256": "296a030bb84c3177fbb70410dc10590555513768d53187de2dbdd8f0e3334004"
     }
   },
   "project": "NGAI-LLMSafeContent/Project_5_Agent_Trajectory_Risk_Audit_Tool",
+  "redaction_update": {
+    "authorized": true,
+    "date": "2026-11-27",
+    "parent_release_commit": "c3b02461f2abf60ea60ca5d69a3e35bce6769c57",
+    "paths": [
+      "docs/reports/issue63-race-items-audit.md",
+      "docs/reports/topic4-saima-five-real-cli-2026-11-19.md",
+      "docs/reports/workbench-pujiang-upload-2026-11-20.md",
+      "docs/topic4-toolchain-176-acceptance.md",
+      "docs/trajectory-audit-bad-case-workflow.md",
+      "scripts/server/deploy-review-workbench-prototype.sh",
+      "scripts/server/deploy-review-workbench.sh",
+      "workbench/README.md",
+      "workbench/web/vite.summary-prototype.config.ts"
+    ],
+    "placeholder_namespace": "example.invalid"
+  },
   "schema": 1,
   "source_commit": "8bc943ba697f4c613540c6b0644e7467cb3a767e",
-  "whitelist_sha256": "e3bf3fc4e012c1a6ee9586a76d98073b46e7d58ab2232b79b4c75ec753e93e50"
+  "whitelist_sha256": "9763cc39f96e7b71fd31f61f269c92ed61244fa024dcc3b1f67bcfaca43d433f"
 }

@@ -10,7 +10,7 @@
 
 ## 运行与证据
 
-- 执行机器：`zhangxu@10.184.17.176`。
+- 执行机器：`zhangxu@platform.example.invalid`。
 - 课题四目录：`/data/zhangxu/repos/Project_4-5_ContentToolRisk/课题五/finial`；仓库 HEAD `8f881430aa1a5115622402cbcb2a4b10cbc1185e`，执行前 `git status --short` 为空。
 - 课题五 HEAD：`d1f7ce872765d1b44099ede6b7b5159eba9d56c1`，执行前工作区干净。
 - 输入：已通过 `pujiang verify` 的 `corpus/topic4-provider-corpus-v3/input-batch.json`，五条，SHA-256 `b9e23528c535a6e459d18426f77c5d143fc91025dce3153505d4ccb8e65ba974`。它由组织方完整 `samples.jsonl` 经 #57 的 adapter 产生；CLI 没有直接读取原始 OpenAI JSONL，也没有读取内部映射或参考答案。

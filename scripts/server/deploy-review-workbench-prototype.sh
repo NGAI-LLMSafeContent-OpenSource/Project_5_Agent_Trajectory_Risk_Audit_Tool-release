@@ -6,7 +6,7 @@ PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 SOURCE_DIR="${PROJECT_ROOT}/prototypes/review-workbench-a-visual"
 V2_SOURCE_DIR="${PROJECT_ROOT}/prototypes/review-workbench-v2"
-PUBLIC_HOST="${PROTOTYPE_PUBLIC_HOST:-10.184.17.176}"
+PUBLIC_HOST="${PROTOTYPE_PUBLIC_HOST:-platform.example.invalid}"
 PORT="${PROTOTYPE_PORT:-5855}"
 DEPLOY_ROOT="${PROTOTYPE_DEPLOY_ROOT:-/var/www/llmsafe-review-workbench-prototype}"
 NGINX_SITE_NAME="${PROTOTYPE_NGINX_SITE_NAME:-llmsafe-review-workbench-prototype}"
@@ -22,7 +22,7 @@ Run this script on the 176 server after pulling the repository.
 
 Options:
   --dry-run           Print the resolved configuration and mutating commands.
-  --host=HOST         nginx server_name (default: 10.184.17.176).
+  --host=HOST         nginx server_name (default: platform.example.invalid).
   --port=PORT         nginx listen port (default: 5855).
   --root=PATH         Release root (default: /var/www/llmsafe-review-workbench-prototype).
   --site-name=NAME    nginx site filename.

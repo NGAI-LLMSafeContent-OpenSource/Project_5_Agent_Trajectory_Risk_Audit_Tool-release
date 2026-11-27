@@ -7,12 +7,12 @@
 182 已安装模型服务和对应隧道的 systemd 用户单元，并启用了开机启动与用户 linger。服务可在 SSH 退出后继续运行。需要手动启动时，可从有 SSH 权限的机器执行：
 
 ```bash
-ssh zx@10.184.17.182 'systemctl --user start topic4-jev topic4-jev-tunnel topic4-v7 topic4-v7-tunnel'
+ssh zx@inference.example.invalid 'systemctl --user start topic4-jev topic4-jev-tunnel topic4-v7 topic4-v7-tunnel'
 ```
 
 ### 命令各部分的含义
 
-- `ssh zx@10.184.17.182` 以 `zx` 身份登录 182，并在 182 执行引号里的命令。
+- `ssh zx@inference.example.invalid` 以 `zx` 身份登录 182，并在 182 执行引号里的命令。
 - `systemctl` 向 systemd 发出服务管理指令。`--user` 选择当前用户的 systemd 管理器，这里是 `zx` 的管理器，通常无需 `sudo`。
 - `start` 提交本次启动任务，对已运行的单元可重复执行。`restart` 会先停止再启动，可能打断正在执行的推理。`enable` 配置自动启动，`enable --now` 同时配置自动启动并立即启动。
 - 后面的四个名称对应四个 `.service` 单元，可省略后缀。单独启动 Jev 时指定 `topic4-jev topic4-jev-tunnel`，单独启动 V7 时指定 `topic4-v7 topic4-v7-tunnel`。
@@ -39,15 +39,15 @@ ssh zx@10.184.17.182 'systemctl --user start topic4-jev topic4-jev-tunnel topic4
 用 `cat` 查看 systemd 实际加载的单元定义，用 `status` 查看运行状态。
 
 ```bash
-ssh zx@10.184.17.182 'systemctl --user cat topic4-jev topic4-jev-tunnel topic4-v7 topic4-v7-tunnel'
-ssh zx@10.184.17.182 'systemctl --user status topic4-jev topic4-jev-tunnel topic4-v7 topic4-v7-tunnel --no-pager'
+ssh zx@inference.example.invalid 'systemctl --user cat topic4-jev topic4-jev-tunnel topic4-v7 topic4-v7-tunnel'
+ssh zx@inference.example.invalid 'systemctl --user status topic4-jev topic4-jev-tunnel topic4-v7 topic4-v7-tunnel --no-pager'
 ```
 
 模型与隧道之间未配置启动顺序依赖，这条 `start` 命令会一次提交四个启动任务。`active` 表示 systemd 跟踪的单元正在运行。启动后回到 176，用下一节的模型 `curl` 验证隧道和实际推理。
 
 ## 逐个检查依赖服务
 
-先登录 `ssh zhangxu@10.184.17.176`，在 176 执行下列命令。三个探测都提交正常文本，直接检查实际检测或生成响应，无需激活 Python 环境。
+先登录 `ssh zhangxu@platform.example.invalid`，在 176 执行下列命令。三个探测都提交正常文本，直接检查实际检测或生成响应，无需激活 Python 环境。
 
 ### 课题二 FilterGuard
 

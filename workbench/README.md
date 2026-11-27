@@ -121,7 +121,7 @@ cd workbench/web && npm test
 
 ## 176 部署
 
-在 `10.184.17.176` 上用 systemd 跑 API、用 nginx 提供页面，和内容安全治理平台同一类方式，不用 Docker。旧静态原型仍在 `5855`，本脚本不改它。
+在 `platform.example.invalid` 上用 systemd 跑 API、用 nginx 提供页面，和内容安全治理平台同一类方式，不用 Docker。旧静态原型仍在 `5855`，本脚本不改它。
 
 先把要上线的提交推到 `origin/main`，再在 176 的仓库里执行：
 
@@ -129,7 +129,7 @@ cd workbench/web && npm test
 bash scripts/server/deploy-review-workbench.sh
 ```
 
-脚本会 `git pull`、安装 Python 依赖、构建前端、重启 `llmsafe-review-workbench`，并重载 nginx。需要 sudo。默认地址是 <http://10.184.17.176:5861/>。只看会改什么、不真正执行时加 `--dry-run`。日志用 `journalctl -u llmsafe-review-workbench -n 80 --no-pager`。
+脚本会 `git pull`、安装 Python 依赖、构建前端、重启 `llmsafe-review-workbench`，并重载 nginx。需要 sudo。默认地址是 <http://platform.example.invalid:5861/>。只看会改什么、不真正执行时加 `--dry-run`。日志用 `journalctl -u llmsafe-review-workbench -n 80 --no-pager`。
 
 ### 部署拓扑与 Provider
 

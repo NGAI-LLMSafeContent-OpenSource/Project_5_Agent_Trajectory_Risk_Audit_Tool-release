@@ -1,5 +1,61 @@
 {
-  "policy": "Unmodified Git blob bytes for existing non-README runtime files; original defects retained. Release-only docs/configuration/examples are listed separately.",
+  "authorized_address_redactions": {
+    "docs/reports/issue63-race-items-audit.md": {
+      "original_source_git_blob": "5c73c2113805e74635d8f913370af1cf64d82913",
+      "previous_release_git_blob": "5c73c2113805e74635d8f913370af1cf64d82913",
+      "reason": "User-authorized replacement of private deployment addresses with reserved example.invalid host placeholders; ports and paths preserved.",
+      "release_git_blob": "681b5ea65e81e042efae5ef4fe391891f4efa505"
+    },
+    "docs/reports/topic4-saima-five-real-cli-2026-11-19.md": {
+      "original_source_git_blob": "18819df528c3afbf28d441e6bd40f269915d8fca",
+      "previous_release_git_blob": "18819df528c3afbf28d441e6bd40f269915d8fca",
+      "reason": "User-authorized replacement of private deployment addresses with reserved example.invalid host placeholders; ports and paths preserved.",
+      "release_git_blob": "2948e3f124244f5758cf5aee92669d39e04ea845"
+    },
+    "docs/reports/workbench-pujiang-upload-2026-11-20.md": {
+      "original_source_git_blob": "1be8e03510323a88c7c7bd2c206262ccfad08880",
+      "previous_release_git_blob": "1be8e03510323a88c7c7bd2c206262ccfad08880",
+      "reason": "User-authorized replacement of private deployment addresses with reserved example.invalid host placeholders; ports and paths preserved.",
+      "release_git_blob": "bf7dbfa13211afbc8d57c1201ccf31aae76ab2be"
+    },
+    "docs/topic4-toolchain-176-acceptance.md": {
+      "original_source_git_blob": "faa935ecf6f37a188131beb2fec23eb8853f75c6",
+      "previous_release_git_blob": "faa935ecf6f37a188131beb2fec23eb8853f75c6",
+      "reason": "User-authorized replacement of private deployment addresses with reserved example.invalid host placeholders; ports and paths preserved.",
+      "release_git_blob": "1d22babc4cc0e300949a5887b5839ce1dd0c53e5"
+    },
+    "docs/trajectory-audit-bad-case-workflow.md": {
+      "original_source_git_blob": "30eacddd35ba2017bd23848775c4561520e6233d",
+      "previous_release_git_blob": "30eacddd35ba2017bd23848775c4561520e6233d",
+      "reason": "User-authorized replacement of private deployment addresses with reserved example.invalid host placeholders; ports and paths preserved.",
+      "release_git_blob": "3addcbece19e64b80553a008a3dc28ad7f00091d"
+    },
+    "scripts/server/deploy-review-workbench-prototype.sh": {
+      "original_source_git_blob": "305387118cd26555348c58292e18c239d9c4b711",
+      "previous_release_git_blob": "305387118cd26555348c58292e18c239d9c4b711",
+      "reason": "User-authorized replacement of private deployment addresses with reserved example.invalid host placeholders; ports and paths preserved.",
+      "release_git_blob": "087c9b1bdc20e06c96b6491d767b83fb6f6df361"
+    },
+    "scripts/server/deploy-review-workbench.sh": {
+      "original_source_git_blob": "2f29126244d7123948ad90128edb9fd080bf29dc",
+      "previous_release_git_blob": "2f29126244d7123948ad90128edb9fd080bf29dc",
+      "reason": "User-authorized replacement of private deployment addresses with reserved example.invalid host placeholders; ports and paths preserved.",
+      "release_git_blob": "013c9ddcb963d4775d984e3d54402b77beb4e599"
+    },
+    "workbench/README.md": {
+      "original_source_git_blob": "0bbf650b9e711f21707628b03ad3220e88d7ac77",
+      "previous_release_git_blob": "0bbf650b9e711f21707628b03ad3220e88d7ac77",
+      "reason": "User-authorized replacement of private deployment addresses with reserved example.invalid host placeholders; ports and paths preserved.",
+      "release_git_blob": "dd59fd3078de2f8787459fb251feb87e3d8742e4"
+    },
+    "workbench/web/vite.summary-prototype.config.ts": {
+      "original_source_git_blob": "d66a131fdf9d9207785d191cdc7d82331cbef017",
+      "previous_release_git_blob": "d66a131fdf9d9207785d191cdc7d82331cbef017",
+      "reason": "User-authorized replacement of private deployment addresses with reserved example.invalid host placeholders; ports and paths preserved.",
+      "release_git_blob": "04206301573b4af9a059fb5f2d200ee461126cf8"
+    }
+  },
+  "policy": "source_files preserve original pinned Git bytes and modes. authorized_address_redactions explicitly record the approved address-only exceptions; no other business logic edits.",
   "project": "NGAI-LLMSafeContent/Project_5_Agent_Trajectory_Risk_Audit_Tool",
   "schema": 1,
   "source_commit": "8bc943ba697f4c613540c6b0644e7467cb3a767e",
@@ -344,10 +400,6 @@
       "git_blob": "dd620f9d92de0bfadfab440ff7e15911444e9d08",
       "mode": "100644"
     },
-    "docs/reports/issue63-race-items-audit.md": {
-      "git_blob": "5c73c2113805e74635d8f913370af1cf64d82913",
-      "mode": "100644"
-    },
     "docs/reports/issue63/01-stats-s01.jpg": {
       "git_blob": "927bd37fe23756ff8f35465e1a94f91ace29b9c6",
       "mode": "100644"
@@ -384,16 +436,8 @@
       "git_blob": "c638bb743bf2e1193194398af5d6e25be70297a4",
       "mode": "100644"
     },
-    "docs/reports/topic4-saima-five-real-cli-2026-11-19.md": {
-      "git_blob": "18819df528c3afbf28d441e6bd40f269915d8fca",
-      "mode": "100644"
-    },
     "docs/reports/topic4-toolchain-integrated-environment-research.md": {
       "git_blob": "173d6f873856e3f596c0b76414d835dd2102dd59",
-      "mode": "100644"
-    },
-    "docs/reports/workbench-pujiang-upload-2026-11-20.md": {
-      "git_blob": "1be8e03510323a88c7c7bd2c206262ccfad08880",
       "mode": "100644"
     },
     "docs/research/agent-evaluation-sources.md": {
@@ -446,14 +490,6 @@
     },
     "docs/topic4-provider-v1-meeting-todos.md": {
       "git_blob": "3fd9f9a9e2ec7ad7be0cfd9a15e8dbb4cd8c527a",
-      "mode": "100644"
-    },
-    "docs/topic4-toolchain-176-acceptance.md": {
-      "git_blob": "faa935ecf6f37a188131beb2fec23eb8853f75c6",
-      "mode": "100644"
-    },
-    "docs/trajectory-audit-bad-case-workflow.md": {
-      "git_blob": "30eacddd35ba2017bd23848775c4561520e6233d",
       "mode": "100644"
     },
     "docs/trajectory-audit.md": {
@@ -586,14 +622,6 @@
     },
     "scripts/run_topic4_real_debug.sh": {
       "git_blob": "efc6af0bd232f2b5e029778b86cc8e1f7c83c4cc",
-      "mode": "100644"
-    },
-    "scripts/server/deploy-review-workbench-prototype.sh": {
-      "git_blob": "305387118cd26555348c58292e18c239d9c4b711",
-      "mode": "100644"
-    },
-    "scripts/server/deploy-review-workbench.sh": {
-      "git_blob": "2f29126244d7123948ad90128edb9fd080bf29dc",
       "mode": "100644"
     },
     "scripts/server/run-topic4-cli.sh": {
@@ -9816,10 +9844,6 @@
       "git_blob": "8e622494cb272d2f6cc32918e37696512a555d3c",
       "mode": "100644"
     },
-    "workbench/README.md": {
-      "git_blob": "0bbf650b9e711f21707628b03ad3220e88d7ac77",
-      "mode": "100644"
-    },
     "workbench/__init__.py": {
       "git_blob": "e79501aef1809f5c37b5575bb3f76e8667ef8d2d",
       "mode": "100644"
@@ -10058,10 +10082,6 @@
     },
     "workbench/web/vite.config.ts": {
       "git_blob": "abef84986c90491a8c7b6315409079af542363ca",
-      "mode": "100644"
-    },
-    "workbench/web/vite.summary-prototype.config.ts": {
-      "git_blob": "d66a131fdf9d9207785d191cdc7d82331cbef017",
       "mode": "100644"
     }
   }

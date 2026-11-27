@@ -11,7 +11,7 @@ else
   PROJECT_ROOT="${WORKBENCH_REPO:-/data/zhangxu/repos/Project_5_Agent_Trajectory_Risk_Audit_Tool}"
 fi
 
-PUBLIC_HOST="${WORKBENCH_PUBLIC_HOST:-10.184.17.176}"
+PUBLIC_HOST="${WORKBENCH_PUBLIC_HOST:-platform.example.invalid}"
 PORT="${WORKBENCH_PORT:-5861}"
 BACKEND_PORT="${WORKBENCH_BACKEND_PORT:-8765}"
 WWW_ROOT="${WORKBENCH_WWW_ROOT:-/data/zhangxu/www/review-workbench}"
@@ -50,7 +50,7 @@ is left alone.
 Options:
   --dry-run           Print the mutating commands and do not change the host.
   --no-pull           Do not git pull --ff-only.
-  --host=HOST         nginx server_name (default: 10.184.17.176).
+  --host=HOST         nginx server_name (default: platform.example.invalid).
   --port=PORT         public nginx port (default: 5861).
   --backend-port=PORT API port (default: 8765).
   --www-root=PATH     static files (default: /data/zhangxu/www/review-workbench).
